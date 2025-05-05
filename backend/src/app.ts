@@ -4,13 +4,13 @@ import customerRoutes from "./modules/customer/customer.route";
 import companyRoutes from "./modules/company/company.route";
 import invoiceRoutes from "./modules/invoice/invoice.route";
 import { errorHandler } from "./middlewares/errorHandler";
-import { logger } from "./middlewares/logger";
-import cors from "cors";
+import { logger } from "./config/logger";
+import { corsMiddleware } from "./config/cors";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(corsMiddleware);
 app.use(logger);
 
 app.use("/api/products", productRoutes);
