@@ -70,14 +70,14 @@
         <mxCell id="fHI8p0kZ0ybq7bgokpPR-15" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1.019;entryY=0.403;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="fHI8p0kZ0ybq7bgokpPR-1" target="fHI8p0kZ0ybq7bgokpPR-10">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="_O2ewM6B6wKDZpP8Bw50-1" value="Manajemen Event Task" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="_O2ewM6B6wKDZpP8Bw50-1" value="Manajemen Task Event" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="440" y="600" width="120" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
   <diagram id="Y6ZRcGM0dUHqpds2IcXK" name="Class Diagram">
-    <mxGraphModel dx="1160" dy="714" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="1428" dy="878" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
