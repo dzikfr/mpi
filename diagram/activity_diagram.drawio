@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36" version="26.3.0" pages="7">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36" version="26.3.0" pages="6">
   <diagram name="Register" id="e7e014a7-5840-1c2e-5031-d8a46d1fe8dd">
     <mxGraphModel dx="977" dy="601" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="826" background="none" math="0" shadow="0">
       <root>
@@ -312,7 +312,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="LOwZ9zjm8JJHkYeaRUfG" name="Manajemen Task Event">
-    <mxGraphModel dx="1092" dy="672" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1547" dy="952" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -390,90 +390,6 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="SrfU6acakXIONDs09eSq-11" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="SrfU6acakXIONDs09eSq-1" target="ssOTPk_rVEe1BJ_uOmtm-26" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-      </root>
-    </mxGraphModel>
-  </diagram>
-  <diagram id="DBkntP5m7onGTVF-xNOk" name="Manajemen Akun Volunteer">
-    <mxGraphModel dx="2062" dy="1269" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
-      <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-1" value="Admin" style="swimlane;whiteSpace=wrap" vertex="1" parent="1">
-          <mxGeometry x="131" y="109" width="280" height="952" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="TrfO_E2D2Y36YlgU3NuH-1" source="TrfO_E2D2Y36YlgU3NuH-3" target="TrfO_E2D2Y36YlgU3NuH-6">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-3" value="" style="ellipse;shape=startState;fillColor=#000000;strokeColor=#ff0000;" vertex="1" parent="TrfO_E2D2Y36YlgU3NuH-1">
-          <mxGeometry x="125" y="40" width="30" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-4" value="Halaman manajemen&#xa;event" style="" vertex="1" parent="TrfO_E2D2Y36YlgU3NuH-1">
-          <mxGeometry x="75" y="192" width="130" height="65" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="TrfO_E2D2Y36YlgU3NuH-1" source="TrfO_E2D2Y36YlgU3NuH-6" target="TrfO_E2D2Y36YlgU3NuH-4">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-6" value="Dashboard Admin" style="" vertex="1" parent="TrfO_E2D2Y36YlgU3NuH-1">
-          <mxGeometry x="75" y="92" width="130" height="65" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="TrfO_E2D2Y36YlgU3NuH-1" source="TrfO_E2D2Y36YlgU3NuH-8" target="TrfO_E2D2Y36YlgU3NuH-10">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-8" value="Pilih event yang&#xa;sedang&#xa;berlangsung" style="" vertex="1" parent="TrfO_E2D2Y36YlgU3NuH-1">
-          <mxGeometry x="75" y="392" width="130" height="65" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="TrfO_E2D2Y36YlgU3NuH-1" source="TrfO_E2D2Y36YlgU3NuH-10" target="TrfO_E2D2Y36YlgU3NuH-11">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-10" value="Masukkan list task" style="" vertex="1" parent="TrfO_E2D2Y36YlgU3NuH-1">
-          <mxGeometry x="75" y="492" width="130" height="65" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-11" value="Action task&#xa;(done/not yet)" style="" vertex="1" parent="TrfO_E2D2Y36YlgU3NuH-1">
-          <mxGeometry x="75" y="592" width="130" height="65" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-12" value="Sistem" style="swimlane;whiteSpace=wrap;container=0;" vertex="1" parent="1">
-          <mxGeometry x="411" y="109" width="285.5" height="952" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-13" value="Menampilkan Event&#xa;yang sedang&#xa;berlangsung" style="" vertex="1" parent="TrfO_E2D2Y36YlgU3NuH-12">
-          <mxGeometry x="77.75" y="291" width="130" height="65" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-14" value="Yes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="TrfO_E2D2Y36YlgU3NuH-12" source="TrfO_E2D2Y36YlgU3NuH-15" target="TrfO_E2D2Y36YlgU3NuH-17">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-15" value="Inputan&amp;nbsp;&lt;div&gt;valid?&lt;/div&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="TrfO_E2D2Y36YlgU3NuH-12">
-          <mxGeometry x="102.75" y="672" width="80" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="TrfO_E2D2Y36YlgU3NuH-12" source="TrfO_E2D2Y36YlgU3NuH-17" target="TrfO_E2D2Y36YlgU3NuH-18">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-17" value="Simpan dan kirim&#xa;response berhasil" style="" vertex="1" parent="TrfO_E2D2Y36YlgU3NuH-12">
-          <mxGeometry x="77.75" y="802" width="130" height="65" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-18" value="" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#ff0000;" vertex="1" parent="TrfO_E2D2Y36YlgU3NuH-12">
-          <mxGeometry x="128" y="902" width="30" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="TrfO_E2D2Y36YlgU3NuH-4" target="TrfO_E2D2Y36YlgU3NuH-13">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="271" y="386" />
-              <mxPoint x="554" y="386" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="TrfO_E2D2Y36YlgU3NuH-13" target="TrfO_E2D2Y36YlgU3NuH-8">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="554" y="481" />
-              <mxPoint x="271" y="481" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="TrfO_E2D2Y36YlgU3NuH-11" target="TrfO_E2D2Y36YlgU3NuH-15">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="TrfO_E2D2Y36YlgU3NuH-22" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="TrfO_E2D2Y36YlgU3NuH-15" target="TrfO_E2D2Y36YlgU3NuH-11">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
       </root>
