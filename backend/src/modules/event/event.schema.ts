@@ -10,6 +10,6 @@ export const eventBodySchema = z.object({
 export type EventBodyInput = z.infer<typeof eventBodySchema>;
 
 export const eventParamsSchema = z.object({
-  id: z.string().transform(Number),
+  id: z.string().min(1, "Event ID is required"),
 });
 export type EventParamsInput = z.infer<typeof eventParamsSchema>;

@@ -29,7 +29,7 @@ export class EventRepository {
 	}
 
 	async updateEvent(
-		id: number,
+		id: string,
 		name: string,
 		description: string | null,
 		notes: string | null,
@@ -57,7 +57,7 @@ export class EventRepository {
 		return result.rows[0];
 	}
 
-	async deleteEvent(id: number, client: PoolClient) {
+	async deleteEvent(id: string, client: PoolClient) {
 
 		const result = await client.query(
 			`UPDATE master_event

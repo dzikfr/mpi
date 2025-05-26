@@ -1,7 +1,7 @@
 import { EventBodyInput, EventParamsInput } from "./event.schema";
 import { EventRepository } from "./event.repository";
 import { pool } from "../../config/database";
-import {PaginationParams}  from "../../types/params/pagination";
+import {PaginationParams}  from "../../types/shared/pagination";
 
 export class eventService {
   private Repo = new EventRepository();
@@ -34,7 +34,7 @@ export class eventService {
     }
   }
 
-  async updateEvent(id: number, input: EventBodyInput) {
+  async updateEvent(id: string, input: EventBodyInput) {
     let client;  
     try {
       client = await pool.connect();
@@ -74,7 +74,7 @@ export class eventService {
     }
   }
 
-  async deleteEvent(id: number) {
+  async deleteEvent(id: string) {
     let client
     try {
       client = await pool.connect();

@@ -1,7 +1,7 @@
 import { AssetBodyInput, AssetParamsInput } from "./asset.schema";
 import { AssetRepository } from "./asset.repository";
 import { pool } from "../../config/database";
-import {PaginationParams}  from "../../types/params/pagination";
+import {PaginationParams}  from "../../types/shared/pagination";
 
 export class assetService {
   private Repo = new AssetRepository();
