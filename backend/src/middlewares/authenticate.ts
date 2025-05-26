@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import path from "path";
 import { Request, Response, NextFunction } from "express";
 
 export const authenticateToken = (
@@ -25,7 +26,7 @@ export const authenticateToken = (
         role: decoded.role as string | undefined,
       };
     } else {
-      throw new Error("Invalid token payload");
+      res.status(401).sendFile(path.join(__dirname, "../../public/forbidden.html"));
     }
 
     next();
