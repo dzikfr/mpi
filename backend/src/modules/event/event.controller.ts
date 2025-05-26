@@ -1,9 +1,4 @@
 // import { Request, Response, NextFunction } from "express";
-// declare module "express-serve-static-core" {
-//   interface Request {
-//     client?: any; 
-//   }
-// }
 // import { invoiceService } from "./event.service";
 // import { invoiceBodySchema, invoiceParamsSchema } from "./event.schema";
 // import { apiResponse } from "../../shared/apiResponse";

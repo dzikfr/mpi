@@ -5,7 +5,8 @@ declare global {
       user?: {
         id: string;
         role?: string;
-      };
+      },
+      client?: any;
     }
   }
 }

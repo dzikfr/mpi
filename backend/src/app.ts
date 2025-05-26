@@ -1,8 +1,8 @@
 import express from "express";
-import productRoutes from "./modules/product/product.route";
-import customerRoutes from "./modules/customer/customer.route";
-import companyRoutes from "./modules/company/company.route";
-import invoiceRoutes from "./modules/invoice/invoice.route";
+// import productRoutes from "./modules/product/product.route";
+// import customerRoutes from "./modules/customer/customer.route";
+// import companyRoutes from "./modules/company/company.route";
+// import invoiceRoutes from "./modules/invoice/invoice.route";
 import { errorHandler } from "./middlewares/errorHandler";
 import { logger } from "./config/logger";
 import { corsMiddleware } from "./config/cors";
@@ -13,10 +13,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(corsMiddleware);
 app.use(logger);
 
-app.use("/api/products", productRoutes);
-app.use("/api/customers", customerRoutes);
-app.use("/api/companies", companyRoutes);
-app.use("/api/invoices", invoiceRoutes);
+// app.use("/api/products", productRoutes);
+// app.use("/api/customers", customerRoutes);
+// app.use("/api/companies", companyRoutes);
+// app.use("/api/invoices", invoiceRoutes);
 
 app.use(errorHandler);
 export default app;
