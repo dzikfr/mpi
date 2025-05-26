@@ -3,11 +3,11 @@ import { PoolClient } from "pg";
 export class EventRepository {
 	async createEvent(
 		name: string,
-		description: string,
-		notes: string,
-		date_start: Date,
-		date_end: Date,
-		url_photo: string,
+		description: string | null,
+		notes: string | null,
+		date_start: Date | null,
+		date_end: Date | null,
+		url_photo: string | null,
 		client: PoolClient
 	) {
 
@@ -31,11 +31,11 @@ export class EventRepository {
 	async updateEvent(
 		id: number,
 		name: string,
-		description: string,
-		notes: string,
-		date_start: Date,
-		date_end: Date,
-		url_photo: string,
+		description: string | null,
+		notes: string | null,
+		date_start: Date | null,
+		date_end: Date | null,
+		url_photo: string | null,
 		client: PoolClient
 	) {
 

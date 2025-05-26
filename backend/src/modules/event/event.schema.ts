@@ -1,24 +1,16 @@
 import { z } from "zod";
 
-export const invoiceBodySchema = z.object({
-  date: z.coerce.date(),
-  payment_method: z.string().min(1),
-  ppn: z.number().min(0),
-  dp: z.number().min(0),
-  user: z.string().min(1),
-  id_customer: z.number().min(1),
-  id_company: z.number().min(1),
-  details: z.array(
-    z.object({
-      id_product: z.number().min(1),
-      qty: z.number().min(1),
-      price: z.number().min(0),
-    })
-  ),
+export const eventBodySchema = z.object({
+  name : z.string().min(1, "Name is required"),
+  description : z.string().min(1, "Description is required"),
+  notes : z.string().optional(),
+  date_start : z.coerce.date(),
+  date_end : z.coerce.date(),
+  url_photo : z.string().optional(),
 });
-export type InvoiceBodyInput = z.infer<typeof invoiceBodySchema>;
+export type EventBodyInput = z.infer<typeof eventBodySchema>;
 
-export const invoiceParamsSchema = z.object({
-  invoice_number: z.string().transform(Number),
+export const eventParamsSchema = z.object({
+  id: z.string().transform(Number),
 });
-export type InvoiceParamsInput = z.infer<typeof invoiceParamsSchema>;
+export type EventParamsInput = z.infer<typeof eventParamsSchema>;

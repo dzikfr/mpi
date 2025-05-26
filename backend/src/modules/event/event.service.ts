@@ -1,57 +1,84 @@
-// import { InvoiceBodyInput, InvoiceParamsInput } from "./event.schema";
-// import { EventRepository } from "./event.repository";
-// import { pool } from "../../config/database";
+import { EventBodyInput, EventParamsInput } from "./event.schema";
+import { EventRepository } from "./event.repository";
+import { pool } from "../../config/database";
+import {PaginationParams}  from "../../types/params/pagination";
 
-// export class invoiceService {
-//   private Repo = new InvoiceRepository();
+export class eventService {
+  private Repo = new EventRepository();
 
-//   async createInvoice(input: InvoiceBodyInput) {
-//     const client = await pool.connect();
-//     try {
-//       await client.query("BEGIN");
+  async createEvent(input: EventBodyInput) {
+    let client;  
+    try {
+      client = await pool.connect();
+      await client.query("BEGIN");
 
-//       const result = await this.Repo.createInvoice(
-//         input.date,
-//         input.payment_method,
-//         input.ppn,
-//         input.dp,
-//         input.user,
-//         input.id_customer,
-//         input.id_company,
-//         input.details,
-//         client
-//       );
+      const result = await this.Repo.createEvent(
+        input.name,
+        input.description || null,
+        input.notes || null,
+        input.date_start || null,
+        input.date_end || null,
+        input.url_photo || null,
+        client
+      );
 
-//       const invoice_number = result.invoice_number;
+      await client.query("COMMIT");
+      return result;
+    } catch (err) {
+      client?.query("ROLLBACK");
+      throw err;
+    } finally {
+      client?.release();
+    }
+  }
 
+  async updateEvent(id: number, input: EventBodyInput) {
+    let client;  
+    try {
+      client = await pool.connect();
+      await client.query("BEGIN");
 
-//       await client.query("COMMIT");
-//       return result;
-//     } catch (err) {
-//       await client.query("ROLLBACK");
-//       throw err;
-//     } finally {
-//       client.release();
-//     }
-//   }
+      const result = await this.Repo.updateEvent(
+        id,
+        input.name,
+        input.description || null,
+        input.notes || null,
+        input.date_start || null,
+        input.date_end || null,
+        input.url_photo || null,
+        client
+      );
 
-//   async getInvoice() {
-//     const client = await pool.connect();
-//     try {
-//       const result = await this.Repo.getInvoice(client);
-//       return result;
-//     } finally {
-//       client.release();
-//     }
-//   }
+      await client.query("COMMIT");
+      return result;
+    } catch (err) {
+      client?.query("ROLLBACK");
+      throw err;
+    } finally {
+      client?.release();
+    }
+  }
 
-//   async getInvoiceById(invoice_number: number) {
-//     const client = await pool.connect();
-//     try {
-//       const result = await this.Repo.getInvoiceById(invoice_number, client);
-//       return result;
-//     } finally {
-//       client.release();
-//     }
-//   }
-// }
+  async getEvents(input : PaginationParams) {
+    let client
+    try {
+      client = await pool.connect();
+      const result = await this.Repo.getEvents(input.take, input.skip, client);
+      return result;
+    } finally {
+      client?.release();
+    }
+  }
+
+  async deleteEvent(id: number) {
+    let client
+    try {
+      client = await pool.connect();
+      const result = await this.Repo.deleteEvent(id, client);
+      return result;
+    } finally {
+      client?.release();
+    }
+  }
+
+}

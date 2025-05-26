@@ -1,9 +1,9 @@
-// import { Router } from "express";
-// import { InvoiceController } from "./event.controller";
+import { Router } from "express";
+import { EventController } from "./event.controller";
 
-// const router = Router();
+const router = Router();
 
-// router.post("/", InvoiceController.createInvoice);
+router.post("/", EventController.createEvent);
 // router.get("/", InvoiceController.getInvoice);
 
 // export default router;
