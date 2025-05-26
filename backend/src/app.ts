@@ -3,6 +3,7 @@ import { errorHandler } from "./middlewares/errorHandler";
 import { logger } from "./config/logger";
 import { corsMiddleware } from "./config/cors";
 import { Router } from "express";
+import path from "path";
 const router = Router();
 
 import eventRoutes from "./modules/event/event.route";
@@ -14,14 +15,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(corsMiddleware);
 app.use(logger);
+app.use(express.static(path.join(__dirname, "../public")));
+
 
 router.use("/event", eventRoutes);
 router.use("/asset", assetRoutes);
 router.use("/auth", authRoutes);
-
-router.use("/*", (req, res) => {
-  res.status(404).json({ message: "What are you looking for? there is nothing here, just us chickens" });
-});
 
 app.use(errorHandler);
 
