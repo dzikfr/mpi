@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { validInputGet } from "./dynamic.type";
 
 export const dynamicBodySchema = z.object({
 	value: z.string().min(1 , "Value is required"),
@@ -20,17 +21,4 @@ export const getSchema = z.object({
 
 export type GetInput = z.infer<typeof getSchema>;
 
-export const validInputGet = ["bank", "location"] as const;
-
 export type ValidType = typeof validInputGet[number];
-
-export const getListDataPrefference : Record<ValidType, { table_name: string; column_name: string }> = {
-    "bank" : {
-        table_name: "bank",
-        column_name: "bank_name",
-    },
-    "location" : {
-        table_name: "master_event",
-        column_name: "location",
-    },
-}

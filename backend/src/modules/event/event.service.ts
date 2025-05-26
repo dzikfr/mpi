@@ -10,6 +10,8 @@ export class eventService {
     let client;  
     try {
       client = await pool.connect();
+
+      const assetName = "dummy"
       await client.query("BEGIN");
 
       const result = await this.Repo.createEvent(
@@ -18,7 +20,7 @@ export class eventService {
         input.notes || null,
         input.date_start || null,
         input.date_end || null,
-        input.url_photo || null,
+        assetName,
         client
       );
 
@@ -38,6 +40,8 @@ export class eventService {
       client = await pool.connect();
       await client.query("BEGIN");
 
+      const assetName = "dummy"
+
       const result = await this.Repo.updateEvent(
         id,
         input.name,
@@ -45,7 +49,7 @@ export class eventService {
         input.notes || null,
         input.date_start || null,
         input.date_end || null,
-        input.url_photo || null,
+        assetName,
         client
       );
 

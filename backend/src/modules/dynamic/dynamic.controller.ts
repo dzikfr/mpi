@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { dynamicService } from "./dynamic.service";
 import { dynamicBodySchema, dynamicParamsSchema } from "./dynamic.schema";
 import { apiResponse } from "../../shared/apiResponse";
-import { validInputGet } from "./dynamic.schema";
+import { validInputGet } from "./dynamic.type";
 import type { ValidType } from "./dynamic.schema"
 
 const service = new dynamicService();

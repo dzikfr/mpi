@@ -1,8 +1,10 @@
-import app from "./app";
+import {app, router} from "./app";
 import path from "path";
 import dotenv from "dotenv";
 
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
+
+app.use("/api", router);
 
 const PORT = parseInt(process.env.PORT || "3000", 10);
 const HOST = process.env.HOST || "0.0.0.0";

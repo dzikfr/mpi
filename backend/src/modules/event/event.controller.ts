@@ -8,8 +8,8 @@ const service = new eventService();
 export class EventController {
   static async createEvent(req: Request, res: Response, next: NextFunction) {
     try {
-      const validated = eventBodySchema.parse(req.body);
-      const result = await service.createEvent(validated);
+      const validatedData = eventBodySchema.parse(req.body);
+      const result = await service.createEvent(validatedData);
       res.status(201).json(apiResponse(true, "Event created", result));
     } catch (err) {
       next(err);
@@ -32,8 +32,8 @@ export class EventController {
   static async updateEvent(req: Request, res: Response, next: NextFunction) {
     try {
       const validatedParams = eventParamsSchema.parse(req.params);
-      const validated = eventBodySchema.parse(req.body);
-      const result = await service.updateEvent(validatedParams.id, validated);
+      const validatedData = eventBodySchema.parse(req.body);
+      const result = await service.updateEvent(validatedParams.id, validatedData);
       res.status(200).json(apiResponse(true, "Event updated", result));
     } catch (err) {
       next(err);

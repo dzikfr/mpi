@@ -3,17 +3,18 @@ import { PoolClient } from "pg";
 export class AssetRepository {
 	async createAsset(
 		name: string,
-		type: string,
-		description: string,
-		quantity: number,
-		available_quantity: number,
-		notes: string,
+		type: string | null,
+		description: string | null,
+		quantity: number | null,
+		available_quantity: number | null,
+		notes: string | null,
+		photo_url: string | null,
 		client: PoolClient
 	) {
 
 		const result = await client.query(
-			`INSERT INTO master_asset (name, type, description, quantity, available_quantity, notes, status) 
-			VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING name`,
+			`INSERT INTO master_asset (name, type, description, quantity, available_quantity, notes, photo_url, status) 
+			VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING name`,
 			[
 				name,
 				type,
@@ -21,6 +22,7 @@ export class AssetRepository {
 				quantity,
 				available_quantity,
 				notes,
+				photo_url,
 				'A'
 			]
 		);
@@ -31,19 +33,20 @@ export class AssetRepository {
 	async updateAsset(
 		id: number,
 		name: string,
-		type: string,
-		description: string,
-		quantity: number,
-		available_quantity: number,
-		notes: string,
+		type: string | null,
+		description: string | null,
+		quantity: number | null,
+		available_quantity: number | null,
+		notes: string | null,
+		photo_url: string | null,
 		client: PoolClient
 	) {
 
 		const result = await client.query(
 			`UPDATE master_asset 
                 SET name = $1, type = $2, description = $3, quantity = $4, 
-                available_quantity = $5, notes = $6 , updated_at = now()
-			WHERE id = $7 RETURNING name`,
+                available_quantity = $5, notes = $6 , photo_url = $7, updated_at = now()
+			WHERE id = $8 RETURNING name`,
 			[
 				name,
 				type,
@@ -51,6 +54,7 @@ export class AssetRepository {
 				quantity,
 				available_quantity,
 				notes,
+				photo_url,
 				id
 			]
 		);

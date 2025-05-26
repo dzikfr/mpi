@@ -6,7 +6,6 @@ export const eventBodySchema = z.object({
   notes : z.string().optional(),
   date_start : z.coerce.date(),
   date_end : z.coerce.date(),
-  url_photo : z.string().optional(),
 });
 export type EventBodyInput = z.infer<typeof eventBodySchema>;
 

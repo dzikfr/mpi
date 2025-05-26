@@ -1,5 +1,6 @@
-import { DynamicBodyInput, DynamicParamsInput, GetInput, getListDataPrefference, ValidType, validInputGet } from "./dynamic.schema";
+import { DynamicBodyInput, DynamicParamsInput, GetInput, ValidType } from "./dynamic.schema";
 import { DynamicRepository } from "./dynamic.repository";
+import {getListDataPrefference , validInputGet} from "./dynamic.type"
 import { pool } from "../../config/database";
 
 export class dynamicService {
