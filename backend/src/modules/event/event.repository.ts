@@ -1,6 +1,7 @@
 import { PoolClient } from "pg";
+import { TaskRepository } from "./fw_task/task.repository";
 
-export class EventRepository {
+export class EventRepository extends TaskRepository{
 	async createEvent(
 		name: string,
 		description: string | null,
@@ -83,7 +84,4 @@ export class EventRepository {
 		return result.rows;
 	}
 
-    async getEventDetails(id: number, client: PoolClient) {
-
-    }
 }

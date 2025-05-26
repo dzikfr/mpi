@@ -2,9 +2,10 @@ import { EventBodyInput, EventParamsInput } from "./event.schema";
 import { EventRepository } from "./event.repository";
 import { pool } from "../../config/database";
 import {PaginationParams}  from "../../types/shared/pagination";
+import { taskService } from "./fw_task/task.service";
 
-export class eventService {
-  private Repo = new EventRepository();
+export class eventService extends taskService {
+  private eventRepo = new EventRepository();
 
   async createEvent(input: EventBodyInput) {
     let client;  
@@ -14,7 +15,7 @@ export class eventService {
       const assetName = "dummy"
       await client.query("BEGIN");
 
-      const result = await this.Repo.createEvent(
+      const result = await this.eventRepo.createEvent(
         input.name,
         input.description || null,
         input.notes || null,
@@ -42,7 +43,7 @@ export class eventService {
 
       const assetName = "dummy"
 
-      const result = await this.Repo.updateEvent(
+      const result = await this.eventRepo.updateEvent(
         id,
         input.name,
         input.description || null,
@@ -67,7 +68,7 @@ export class eventService {
     let client
     try {
       client = await pool.connect();
-      const result = await this.Repo.getEvents(input.take, input.skip, client);
+      const result = await this.eventRepo.getEvents(input.take, input.skip, client);
       return result;
     } finally {
       client?.release();
@@ -78,7 +79,7 @@ export class eventService {
     let client
     try {
       client = await pool.connect();
-      const result = await this.Repo.deleteEvent(id, client);
+      const result = await this.eventRepo.deleteEvent(id, client);
       return result;
     } finally {
       client?.release();
