@@ -9,8 +9,11 @@ export class AssetController {
   static async createAsset(req: Request, res: Response, next: NextFunction) {
     try {
       const validatedData = assetBodySchema.parse(req.body);
-      const photo = req.file;
-      const photo_url = `${photo?.destination}${photo?.filename}`;
+      const photo = req.file ? req.file : null;
+      let photo_url = null;
+      if (photo) {
+        photo_url = `${photo?.destination}${photo?.filename}`;
+      }
       const result = await service.createAsset(validatedData, photo_url);
       res.status(201).json(apiResponse(true, "Asset created", result));
     } catch (err) {

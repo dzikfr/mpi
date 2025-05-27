@@ -1,5 +1,6 @@
 import { PoolClient } from "pg";
 import { TaskRepository } from "./fw_task/task.repository";
+import { EventType } from "./event.type";
 
 export class EventRepository extends TaskRepository{
 	async createEvent(
@@ -42,7 +43,7 @@ export class EventRepository extends TaskRepository{
 
 		const result = await client.query(
 			`UPDATE master_event
-				SET name = $1, description = $2, notes = $3, date_start = $4, date_end = $5, photo_url = $6, updated_at = now()
+				SET name = $1, description = $2, notes = $3, date_start = $4, date_end = $5, photo_url = COALESCE($6, photo_url), updated_at = now()
 			WHERE id = $7 RETURNING name`,
 			[
 				name,
@@ -82,6 +83,16 @@ export class EventRepository extends TaskRepository{
 		);
 
 		return result.rows;
+	}
+
+	async getEventById(id: string, client: PoolClient) : Promise<EventType | null> {
+
+		const result = await client.query(
+			`SELECT * FROM master_event WHERE id = $1 AND status = 'A'`,
+			[id]
+		);
+
+		return result.rows[0];
 	}
 
 }

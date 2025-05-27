@@ -46,7 +46,7 @@ export class AssetRepository {
 		const result = await client.query(
 			`UPDATE master_asset 
                 SET name = $1, type = $2, description = $3, quantity = $4, 
-                available_quantity = $5, notes = $6 , photo_url = $7, updated_at = now()
+                available_quantity = $5, notes = $6 , photo_url = COALESCE($7, photo_url), updated_at = now()
 			WHERE id = $8 RETURNING name`,
 			[
 				name,

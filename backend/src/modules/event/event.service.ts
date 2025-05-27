@@ -7,12 +7,11 @@ import { taskService } from "./fw_task/task.service";
 export class eventService extends taskService {
   private eventRepo = new EventRepository();
 
-  async createEvent(input: EventBodyInput) {
+  async createEvent(input: EventBodyInput, photo_url : string | null = null) {
     let client;  
     try {
       client = await pool.connect();
 
-      const assetName = "dummy"
       await client.query("BEGIN");
 
       const result = await this.eventRepo.createEvent(
@@ -21,7 +20,7 @@ export class eventService extends taskService {
         input.notes || null,
         input.date_start || null,
         input.date_end || null,
-        assetName,
+        photo_url,
         client
       );
 
@@ -35,13 +34,11 @@ export class eventService extends taskService {
     }
   }
 
-  async updateEvent(id: string, input: EventBodyInput) {
+  async updateEvent(id: string, input: EventBodyInput, photo_url : string | null = null) {
     let client;  
     try {
       client = await pool.connect();
       await client.query("BEGIN");
-
-      const assetName = "dummy"
 
       const result = await this.eventRepo.updateEvent(
         id,
@@ -50,7 +47,7 @@ export class eventService extends taskService {
         input.notes || null,
         input.date_start || null,
         input.date_end || null,
-        assetName,
+        photo_url,
         client
       );
 
@@ -83,6 +80,16 @@ export class eventService extends taskService {
       return result;
     } finally {
       client?.release();
+    }
+  }
+
+  async getEventById(id: string) {
+    const client = await pool.connect();
+    try {
+      const result = await this.eventRepo.getEventById(id, client);
+      return result;
+    } finally {
+      client.release();
     }
   }
 

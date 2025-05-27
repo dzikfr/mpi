@@ -9,7 +9,9 @@ export class EventController {
   static async createEvent(req: Request, res: Response, next: NextFunction) {
     try {
       const validatedData = eventBodySchema.parse(req.body);
-      const result = await service.createEvent(validatedData);
+      const photo = req.file;
+      const photo_url = `${photo?.destination}${photo?.filename}`;
+      const result = await service.createEvent(validatedData, photo_url);
       res.status(201).json(apiResponse(true, "Event created", result));
     } catch (err) {
       next(err);
@@ -32,8 +34,13 @@ export class EventController {
   static async updateEvent(req: Request, res: Response, next: NextFunction) {
     try {
       const validatedParams = eventParamsSchema.parse(req.params);
+      const photo = req.file ? req.file : null;
+      let photo_url = null;
+      if (photo) {
+        photo_url = `${photo?.destination}${photo?.filename}`;
+      }
       const validatedData = eventBodySchema.parse(req.body);
-      const result = await service.updateEvent(validatedParams.id, validatedData);
+      const result = await service.updateEvent(validatedParams.id, validatedData, photo_url);
       res.status(200).json(apiResponse(true, "Event updated", result));
     } catch (err) {
       next(err);
