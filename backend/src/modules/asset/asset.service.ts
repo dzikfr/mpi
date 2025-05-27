@@ -12,6 +12,11 @@ export class assetService {
       client = await pool.connect();
       await client.query("BEGIN");
 
+      const checkAsset = await this.Repo.getUniqueAsset(input.name, client);
+      if (checkAsset) {
+        throw new Error("Asset name already exists");
+      }
+
       const result = await this.Repo.createAsset(
         input.name,
         input.type || null,
@@ -33,13 +38,16 @@ export class assetService {
     }
   }
 
-  async updateAsset(id: string, input: AssetBodyInput) {
+  async updateAsset(id: string, input: AssetBodyInput, photo_url: string | null = null) {
     let client;  
     try {
       client = await pool.connect();
       await client.query("BEGIN");
 
-      const assetName = "dummy"
+      const checkAsset = await this.Repo.getUniqueAsset(input.name, client);
+      if (checkAsset) {
+        throw new Error("Asset name already exists");
+      }
 
       const result = await this.Repo.updateAsset(
         id,
@@ -49,7 +57,7 @@ export class assetService {
         input.quantity || null,
         input.available_quantity || null,
         input.notes || null,
-        assetName,
+        photo_url,
         client
       );
 

@@ -37,13 +37,15 @@ export class dynamicService {
 
         const pref = getListDataPrefference[type];
         let client;
+
+        console.log("pref", pref);
         try {
             client = await pool.connect();
             const result = await this.Repo.getListData(
                 pref.table_name,
                 pref.column_name,
-                input.skip || 0,
                 input.take || 50,
+                input.skip || 0,
                 client
             );
             return result;

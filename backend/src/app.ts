@@ -9,6 +9,7 @@ const router = Router();
 import eventRoutes from "./modules/event/event.route";
 import assetRoutes from "./modules/asset/asset.routes";
 import authRoutes from "./modules/authenticate/auth.route";
+import dynamicRoutes from "./modules/dynamic/dynamic.route"; 
 
 const app = express();
 app.use(express.json());
@@ -21,6 +22,7 @@ app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 router.use("/event", eventRoutes);
 router.use("/asset", assetRoutes);
 router.use("/auth", authRoutes);
+router.use("/dynamic", dynamicRoutes);
 
 app.use(errorHandler);
 

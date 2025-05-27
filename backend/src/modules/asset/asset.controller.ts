@@ -37,8 +37,13 @@ export class AssetController {
   static async updateAsset(req: Request, res: Response, next: NextFunction) {
     try {
       const validatedParams = assetParamsSchema.parse(req.params);
+      const photo = req.file ? req.file : null;
+      let photo_url = null;
+      if (photo) {
+        photo_url = `${photo?.destination}${photo?.filename}`;
+      }
       const validatedData = assetBodySchema.parse(req.body);
-      const result = await service.updateAsset(validatedParams.id, validatedData);
+      const result = await service.updateAsset(validatedParams.id, validatedData, photo_url);
       res.status(200).json(apiResponse(true, "Asset updated", result));
     } catch (err) {
       next(err);

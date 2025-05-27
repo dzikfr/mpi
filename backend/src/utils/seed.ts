@@ -41,10 +41,10 @@ async function seed() {
     const insertRoleAdmin = await client.query(
       `
       INSERT INTO master_role (role_name, role_description, status)
-      VALUES ($1, $2, 'A') 
-      RETURNING id 
+      VALUES ($1, $2, 'A'), ($3, $4, 'A')
+      RETURNING id
       `,
-      ["admin", "Administrator"]
+      ["admin", "Administrator", "volunteer", "Volunteer"]
     );
 
 

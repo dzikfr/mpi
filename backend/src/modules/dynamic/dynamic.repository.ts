@@ -1,4 +1,5 @@
 import { PoolClient } from "pg";
+import { ListDataType } from "./dynamic.type";
 
 export class DynamicRepository {
     async createListData(
@@ -70,13 +71,15 @@ export class DynamicRepository {
         take: number = 50, 
         skip: number = 0, 
         client: PoolClient
-        ) {
+        ) : Promise<ListDataType[]> {
 
         const result = await client.query(
             `SELECT * FROM list_data
                 WHERE status = 'A' AND table_name = $1 AND column_name = $2 
             LIMIT $3 OFFSET $4
         `, [table_name, column_name, take, skip]);
+
+        console.log("getListData result", result.rows);
 
         return result.rows;
     }

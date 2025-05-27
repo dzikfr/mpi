@@ -97,4 +97,17 @@ export class AssetRepository {
 
 		return result.rows[0];
     }
+	
+	async getUniqueAsset(
+		name: string, 
+		client: PoolClient
+	): Promise< Boolean> {
+
+		const result = await client.query(
+			`SELECT 1 FROM master_asset WHERE name = $1 AND status = 'A'`,
+			[name]
+		);
+
+		return result.rows.length > 0;
+	}
 }

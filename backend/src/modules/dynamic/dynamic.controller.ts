@@ -8,7 +8,7 @@ import type { ValidType } from "./dynamic.schema"
 const service = new dynamicService();
 
 export class DynamicController {
-	static async createListData(req: Request, res: Response, next: NextFunction) : Promise<void | Response> {
+	static async createListData(req: Request, res: Response, next: NextFunction) : Promise<any> {
 		try {
             const { type } = req.params;
 
@@ -26,7 +26,7 @@ export class DynamicController {
 		}
 	}
 
-	static async getListData(req: Request, res: Response, next: NextFunction) : Promise<void | Response> {
+	static async getListData(req: Request, res: Response, next: NextFunction) : Promise<any> {
 		try {
 			const { type } = req.params;
 
@@ -35,8 +35,8 @@ export class DynamicController {
             }
 
 		    const safeType = type as ValidType;
-			const result = await service.getListData({ skip: 0, take: 50 }, safeType);
-			res.status(200).json(apiResponse(true, "Invoice fetched", result));
+			const result = await service.getListData({ take: 50, skip: 0 }, safeType);
+			res.status(200).json(apiResponse(true, "List Data fetched", result));
 		} catch (err) {
 			next(err);
 		}

@@ -34,7 +34,7 @@ export class VolunteerRepository {
 	}
 
 	async updateVolunteer(
-	id: number,
+	id: string,
     nik : string,
     full_name: string,
     address : string,
@@ -47,7 +47,7 @@ export class VolunteerRepository {
 
 		const result = await client.query(
 		`UPDATE fw_user_volunteer
-			SET nik = $1, full_name = $2, address = $3, age = $4, email = $5, phone = $6, url_photo = $7, updated_at = now()
+			SET nik = $1, full_name = $2, address = $3, age = $4, email = $5, phone = $6, url_photo = COALESCE($7, url_photo), updated_at = now()
         WHERE id = $8 RETURNING id, full_name
       	`,
 			[
@@ -59,13 +59,13 @@ export class VolunteerRepository {
         phone,
         url_photo,
         id
-			]
+		]
 		);
 
 		return result.rows[0];
 	}
 
-	async deleteVolunteer(id: number, client: PoolClient) {
+	async deleteVolunteer(id: string, client: PoolClient) {
 
 		const result = await client.query(
 			`UPDATE fw_user_volunteer

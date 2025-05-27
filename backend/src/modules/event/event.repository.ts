@@ -95,4 +95,16 @@ export class EventRepository extends TaskRepository{
 		return result.rows[0];
 	}
 
+	async getUniqueEvent(
+		name: string, 
+		client: PoolClient
+	): Promise< Boolean> {
+
+		const result = await client.query(
+			`SELECT 1 FROM master_event WHERE name = $1 AND status = 'A'`,
+			[name]
+		);
+
+		return result.rows.length > 0;
+	}
 }

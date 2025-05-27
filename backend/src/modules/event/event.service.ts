@@ -14,6 +14,11 @@ export class eventService extends taskService {
 
       await client.query("BEGIN");
 
+      const checkEvent = await this.eventRepo.getUniqueEvent(input.name, client);
+      if (checkEvent) {
+        throw new Error("Event name already exists");
+      }
+
       const result = await this.eventRepo.createEvent(
         input.name,
         input.description || null,
@@ -39,6 +44,11 @@ export class eventService extends taskService {
     try {
       client = await pool.connect();
       await client.query("BEGIN");
+
+      const checkEvent = await this.eventRepo.getUniqueEvent(input.name, client);
+      if (checkEvent) {
+        throw new Error("Event name already exists");
+      }
 
       const result = await this.eventRepo.updateEvent(
         id,
