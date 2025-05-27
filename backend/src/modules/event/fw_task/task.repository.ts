@@ -1,6 +1,7 @@
 import { PoolClient } from "pg";
+import { EventRepository } from "../event.repository";
 
-export class TaskRepository {
+export class TaskRepository extends EventRepository {
 	async createTasks(
 	tasks: {
 		ref_event_id: string;

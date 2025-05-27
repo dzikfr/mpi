@@ -1,8 +1,7 @@
 import { PoolClient } from "pg";
-import { TaskRepository } from "./fw_task/task.repository";
 import { EventType } from "./event.type";
 
-export class EventRepository extends TaskRepository{
+export class EventRepository{
 	async createEvent(
 		name: string,
 		description: string | null,
@@ -85,26 +84,13 @@ export class EventRepository extends TaskRepository{
 		return result.rows;
 	}
 
-	async getEventById(id: string, client: PoolClient) : Promise<EventType | null> {
-
-		const result = await client.query(
-			`SELECT * FROM master_event WHERE id = $1 AND status = 'A'`,
-			[id]
-		);
-
-		return result.rows[0];
-	}
-
-	async getUniqueEvent(
-		name: string, 
+	async checkExists(
+		column: "id" | "name",
+		value: string,
 		client: PoolClient
-	): Promise< Boolean> {
-
-		const result = await client.query(
-			`SELECT 1 FROM master_event WHERE name = $1 AND status = 'A'`,
-			[name]
-		);
-
+	): Promise<boolean> {
+		const query = `SELECT 1 FROM master_event WHERE ${column} = $1 AND status = 'A'`;
+		const result = await client.query(query, [value]);
 		return result.rows.length > 0;
 	}
 }

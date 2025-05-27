@@ -12,7 +12,7 @@ export class assetService {
       client = await pool.connect();
       await client.query("BEGIN");
 
-      const checkAsset = await this.Repo.getUniqueAsset(input.name, client);
+      const checkAsset = await this.checkAssetByName(input.name);
       if (checkAsset) {
         throw new Error("Asset name already exists");
       }
@@ -44,7 +44,8 @@ export class assetService {
       client = await pool.connect();
       await client.query("BEGIN");
 
-      const checkAsset = await this.Repo.getUniqueAsset(input.name, client);
+      const checkAsset = await this.checkAssetByName(input.name);
+
       if (checkAsset) {
         throw new Error("Asset name already exists");
       }
@@ -86,10 +87,34 @@ export class assetService {
     let client
     try {
       client = await pool.connect();
+      const checkAsset = await this.checkAssetById(id);
+      if (!checkAsset) {
+        throw new Error("Asset not found");
+      }
       const result = await this.Repo.deleteAsset(id, client);
       return result;
     } finally {
       client?.release();
+    }
+  }
+
+  async checkAssetById(id: string) {
+    const client = await pool.connect();
+    try {
+      const result = await this.Repo.checkExists("id", id, client);
+      return result;
+    } finally {
+      client.release();
+    }
+  }
+
+  async checkAssetByName(name: string) {
+    const client = await pool.connect();
+    try {
+      const result = await this.Repo.checkExists("name", name, client);
+      return result;
+    } finally {
+      client.release();
     }
   }
 

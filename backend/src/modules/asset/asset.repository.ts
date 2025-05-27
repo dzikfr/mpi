@@ -89,25 +89,13 @@ export class AssetRepository {
 		return result.rows;
 	}
 
-    async getAssetById(id: number, client: PoolClient) : Promise<AssetType | null> {
-		const result = await client.query(
-			`SELECT * FROM master_asset WHERE id = $1 AND status = 'A'`,
-			[id]
-		);
-
-		return result.rows[0];
-    }
-	
-	async getUniqueAsset(
-		name: string, 
+	async checkExists(
+		column: "id" | "name",
+		value: string,
 		client: PoolClient
-	): Promise< Boolean> {
-
-		const result = await client.query(
-			`SELECT 1 FROM master_asset WHERE name = $1 AND status = 'A'`,
-			[name]
-		);
-
+	): Promise<boolean> {
+		const query = `SELECT 1 FROM master_asset WHERE ${column} = $1 AND status = 'A'`;
+		const result = await client.query(query, [value]);
 		return result.rows.length > 0;
 	}
 }
