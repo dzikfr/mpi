@@ -23,16 +23,13 @@ async function seed() {
 
     const insertSuperAdmin = await client.query(
       `
-      INSERT INTO master_user (user_id, username, first_name, email, password, is_verified, status, phone)
-      VALUES ($1, $2, $3, $4, $5, true, 'A', $6)
+      INSERT INTO master_user (username, password, status)
+      VALUES ($1, $2, 'A') 
+      RETURNING id
       `,
       [
-        process.env.SUPER_MASTER_USER_ID,
         process.env.SUPER_MASTER_USERNAME,
-        process.env.SUPER_MASTER_FIRST_NAME,
-        process.env.SUPER_MASTER_EMAIL,
         hashedPassword,
-        process.env.SUPER_MASTER_PHONE,
       ]
     );
 
@@ -40,6 +37,36 @@ async function seed() {
       throw new Error("failed to insert super admin");
     }
 
+    // buat role admin
+    const insertRoleAdmin = await client.query(
+      `
+      INSERT INTO master_role (role_name, role_description, status)
+      VALUES ($1, $2, 'A') 
+      RETURNING id 
+      `,
+      ["admin", "Administrator"]
+    );
+
+
+    if (insertRoleAdmin.rowCount === 0) {
+      throw new Error("failed to insert role admin");
+    }
+
+    const adminId = insertRoleAdmin.rows[0].id;
+
+    //masukkan ke user role untuk admin
+    const insertUserRole = await client.query(
+      `
+      INSERT INTO fw_user_role (ref_user_id, ref_role_id)
+      VALUES ($1, $2)
+      RETURNING id
+      `,
+      [insertSuperAdmin.rows[0].id, adminId]
+    );
+
+    if (insertUserRole.rowCount === 0) {
+      throw new Error("failed to insert user role");
+    }
     // masukkan list status
     // const statuses = [
     //   { char: "A", description: "Active" },
@@ -60,35 +87,11 @@ async function seed() {
 
     // masukkan list data
     const listData = [
-      { table_name: "audit_log", field_name: "changes_category", name: "USER_REGISTER", description: "User registration activity" },
-      { table_name: "audit_log", field_name: "changes_category", name: "API_ACCESS", description: "API access activity" },
-      { table_name: "audit_log", field_name: "changes_category", name: "UPDATE USER", description: "user updated profile activity" },
-      { table_name: "audit_log", field_name: "changes_category", name: "ERROR", description: "error response" },
-      { table_name: "audit_log", field_name: "changes_category", name: "CREATE_PRODUCT", description: "user created product" },
-      { table_name: "master_access", field_name: "module_name", name: "product", description: "mengelola product" },
-      { table_name: "master_access", field_name: "module_name", name: "company", description: "mengelola product" },
-      { table_name: "master_access", field_name: "module_name", name: "role", description: "" },
-      { table_name: "master_access", field_name: "module_name", name: "user", description: "" },
-      { table_name: "master_access", field_name: "module_name", name: "company-docs", description: "" },
-      { table_name: "master_access", field_name: "module_name", name: "discussion", description: "" },
-      { table_name: "master_access", field_name: "module_name", name: "payment", description: "" },
-      { table_name: "master_access", field_name: "module_name", name: "purchase-order", description: "" },
-      { table_name: "master_access", field_name: "module_name", name: "delivery-order", description: "" },
-      { table_name: "master_access", field_name: "module_name", name: "invoice", description: "" },
-      { table_name: "master_access", field_name: "module_name", name: "transaction", description: ""},
-      { table_name: "company_product", field_name: "category", name: "Alat Tulis Kantor", description: "Alat Tulis Kantor category" },
-      { table_name: "company_product", field_name: "category", name: "Perlengkapan Dapur", description: "Perlengkapan Dapur category"},
-      { table_name: "company_product", field_name: "category", name: "Handphone & Tablet", description: "Handphone & Tablet category" },
-      { table_name: "company_product", field_name: "category", name: "Komputer & Laptop", description: "Komputer & Laptop category" },
-      { table_name: "company_product", field_name: "category", name: "Kamera & Aksesoris", description: "Kamera & Aksesoris category" },
-      { table_name: "company_product", field_name: "category", name: "Otomotif", description: "Otomotif category" },
-      { table_name: "company_product", field_name: "category", name: "Technology", description: "Category for technology products"},
-      { table_name: "company_product", field_name: "category", name: "Fashion", description: "Category for fashion products" },
-      { table_name: "company_payment_info", field_name: "bank_name", name: "BCA", description: "Bank Central Asia" },
-      { table_name: "company_payment_info", field_name: "bank_name", name: "BNI", description: "Bank Negara Indonesia" },
-      { table_name: "company_payment_info", field_name: "bank_name", name: "BRI", description: "Bank Rakyat Indonesia" },
-      { table_name: "fw_purchase_order_other_cost", field_name: "cost_name", name: "PPN", description: "Pajak Pertambahan Nilai" },
-      { table_name: "fw_purchase_order_other_cost", field_name: "cost_name", name: "Biaya Lainnya", description: "Biaya Lainnya" },
+      { table_name: "master_asset", column_name: "type", value: "Perlengkapan", description: "Perlengkapan" },
+      { table_name: "master_asset", column_name: "type", value: "Elektronik", description: "Elektronik" },
+      { table_name: "master_asset", column_name: "type", value: "Kendaraan", description: "Kendaraan" },
+      { table_name: "master_asset", column_name: "type", value: "Furniture", description: "Furniture" },
+      { table_name: "master_asset", column_name: "type", value: "Pakaian", description: "Pakaian" },
     ];
 
 
@@ -98,9 +101,11 @@ async function seed() {
           INSERT INTO list_data (table_name, column_name, value, description, status, ts_insert)
           VALUES ($1, $2, $3, $4, 'A', NOW())
           `,
-        [data.table_name, data.field_name, data.name, data.description]
+        [data.table_name, data.column_name, data.value, data.description]
       );
     }
+
+
 
     await client.query("COMMIT");
 

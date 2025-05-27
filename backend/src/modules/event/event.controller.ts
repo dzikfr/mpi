@@ -19,8 +19,8 @@ export class EventController {
   static async getEvents(req: Request, res: Response, next: NextFunction) {
     try {
       const get = {
-        skip : Number(req.params.skip),
-        take : Number(req.params.take)
+        skip : parseInt(req.query.take as string) || 0,
+        take : parseInt(req.query.skip as string) || 50
       }
       const result = await service.getEvents(get);
       res.status(200).json(apiResponse(true, "Events fetched", result));

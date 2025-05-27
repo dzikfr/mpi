@@ -23,10 +23,11 @@ export class TaskController {
   static async getTasks(req: Request, res: Response, next: NextFunction) {
     try {
       const get = {
-        skip : Number(req.params.skip),
-        take : Number(req.params.take)
+        skip : parseInt(req.query.take as string) || 0,
+        take : parseInt(req.query.skip as string) || 50
       }
-      const result = await service.getTasks(get);
+      const ref_company_id = req.params.ref_company_id as string;
+      const result = await service.getTasks(ref_company_id, get);
       res.status(200).json(apiResponse(true, "Tasks fetched", result));
     } catch (err) {
       next(err);

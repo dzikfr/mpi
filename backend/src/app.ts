@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(corsMiddleware);
 app.use(logger);
 app.use(express.static(path.join(__dirname, "../public")));
-
+app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 router.use("/event", eventRoutes);
 router.use("/asset", assetRoutes);

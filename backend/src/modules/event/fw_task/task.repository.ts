@@ -86,14 +86,15 @@ export class TaskRepository {
 	}
 
 	async getTasks(
+		ref_event_id: string,
 		take: number = 50, 
 		skip: number = 0, 
 		client: PoolClient
 		) {
 
 		const result = await client.query(
-			`SELECT * FROM fw_event_task WHERE status = 'A' OR status = 'P' LIMIT $1 OFFSET $2`,
-			[take, skip]
+			`SELECT * FROM fw_event_task WHERE status = 'A' OR status = 'P' AND ref_event_id = $1 LIMIT $2 OFFSET $3`,
+			[ref_event_id, take, skip]
 		);
 
 		return result.rows;

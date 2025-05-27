@@ -14,6 +14,8 @@ export const authenticateToken = (
     return;
   }
 
+  console.log("Token received:", token);
+
   try {
     if (!process.env.JWT_SECRET) {
       throw new Error("JWT_SECRET is not defined");
@@ -28,6 +30,8 @@ export const authenticateToken = (
     } else {
       res.status(401).sendFile(path.join(__dirname, "../../public/forbidden.html"));
     }
+
+    console.log("Decoded token:", decoded);
 
     next();
   } catch (error) {

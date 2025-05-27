@@ -6,13 +6,11 @@ import {PaginationParams}  from "../../types/shared/pagination";
 export class assetService {
   private Repo = new AssetRepository();
 
-  async createAsset(input: AssetBodyInput) {
+  async createAsset(input: AssetBodyInput, photo_url: string | null = null) {
     let client;  
     try {
       client = await pool.connect();
       await client.query("BEGIN");
-
-      const assetName = "dummy"
 
       const result = await this.Repo.createAsset(
         input.name,
@@ -21,7 +19,7 @@ export class assetService {
         input.quantity || null,
         input.available_quantity || null,
         input.notes || null,
-        assetName,
+        photo_url,
         client
       );
 
@@ -35,7 +33,7 @@ export class assetService {
     }
   }
 
-  async updateAsset(id: number, input: AssetBodyInput) {
+  async updateAsset(id: string, input: AssetBodyInput) {
     let client;  
     try {
       client = await pool.connect();
@@ -76,7 +74,7 @@ export class assetService {
     }
   }
 
-  async deleteAsset(id: number) {
+  async deleteAsset(id: string) {
     let client
     try {
       client = await pool.connect();

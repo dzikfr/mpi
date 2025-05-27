@@ -11,6 +11,6 @@ export const assetBodySchema = z.object({
 export type AssetBodyInput = z.infer<typeof assetBodySchema>;
 
 export const assetParamsSchema = z.object({
-  id: z.string().transform(Number),
+  id: z.string().min(1, "ID is required"),
 });
 export type AssetParamsInput = z.infer<typeof assetParamsSchema>;

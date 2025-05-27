@@ -1,43 +1,57 @@
 import { PoolClient } from "pg";
 
 export class EventVolunteerRepository {
-    async createEventVolunteer(
-        event_id: string,
-        volunteer_id: string,
-        registered_at: Date,
-        verified_at: Date,
-        ref_verified_id: string,
-        notes: string,
+    async createEventVolunteers(
+        volunteers: {
+            event_id: string;
+            volunteer_id: string;
+            registered_at: Date;
+            verified_at: Date | null;
+            ref_verified_id: string | null;
+            notes: string | null;
+        }[],
         client: PoolClient
-    ) {
+        ): Promise<{ ref_event_id: string; ref_volunteer_id: string }[]> {
+        const values: any[] = [];
+        const placeholders: string[] = [];
 
-        const result = await client.query(
-            `INSERT INTO fw_volunteer_event 
-                (event_id, volunteer_id, registered_at, verified_at, ref_verified_id, notes, created_at, status) 
-            VALUES ($1, $2, $3, $4, $5, $6, now(), $7) 
-                RETURNING ref_event_id, ref_volunteer_id
-            `,
-            [
-                event_id,
-                volunteer_id,
-                registered_at,
-                verified_at,
-                ref_verified_id,
-                notes,
-                'A'
-            ]
-        );
+        volunteers.forEach((v, i) => {
+            const idx = i * 7;
+            placeholders.push(
+            `($${idx + 1}, $${idx + 2}, $${idx + 3}, $${idx + 4}, $${idx + 5}, $${idx + 6}, now(), $${idx + 7})`
+            );
+            values.push(
+            v.event_id,
+            v.volunteer_id,
+            v.registered_at,
+            v.verified_at,
+            v.ref_verified_id,
+            v.notes,
+            'A' // status
+            );
+        });
 
-        return result.rows[0];
+        const query = `
+            INSERT INTO fw_volunteer_event (
+            event_id, volunteer_id, registered_at,
+            verified_at, ref_verified_id, notes,
+            created_at, status
+            )
+            VALUES ${placeholders.join(', ')}
+            RETURNING ref_event_id, ref_volunteer_id
+        `;
+
+        const result = await client.query(query, values);
+        return result.rows;
     }
 
     async updateEventVolunteer(
-        id: number,
+        id: string,
         registered_at: Date,
-        verified_at: Date,
-        notes: string,
+        verified_at: Date | null,
+        notes: string | null,
         client: PoolClient
-    ) {
+    ) : Promise<{ id: string }> {
 
         const result = await client.query(
             `UPDATE fw_volunteer_event
@@ -55,12 +69,12 @@ export class EventVolunteerRepository {
         return result.rows[0];
     }
 
-    async deleteEventVolunteer(id: number, client: PoolClient) {
+    async deleteEventVolunteer(id: string, client: PoolClient) : Promise<{ ref_event_id: string, ref_volunteer_id: string }> {
 
         const result = await client.query(
             `UPDATE fw_volunteer_event
                 SET status = 'D' 
-                WHERE id = $1 RETURNING id`,
+                WHERE id = $1 RETURNING ref_event_id, ref_volunteer_id`,
             [id]
         );
 
@@ -72,7 +86,7 @@ export class EventVolunteerRepository {
         take: number = 50, 
         skip: number = 0, 
         client: PoolClient
-        ) {
+        ) : Promise<any[]> {
 
         const result = await client.query(
             `SELECT * FROM fw_volunteer_event 
@@ -83,9 +97,5 @@ export class EventVolunteerRepository {
         );
 
         return result.rows;
-    }
-
-    async getEventDetails(id: number, client: PoolClient) {
-
     }
 }

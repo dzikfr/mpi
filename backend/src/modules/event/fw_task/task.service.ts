@@ -65,11 +65,11 @@ export class taskService {
     }
   }
 
-  async getTasks(input : PaginationParams) {
+  async getTasks(ref_event_id: string, input : PaginationParams) {
     let client
     try {
       client = await pool.connect();
-      const result = await this.Repo.getTasks(input.take, input.skip, client);
+      const result = await this.Repo.getTasks(ref_event_id, input.take, input.skip, client);
       return result;
     } finally {
       client?.release();

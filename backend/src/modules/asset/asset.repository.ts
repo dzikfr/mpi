@@ -1,4 +1,5 @@
 import { PoolClient } from "pg";
+import {AssetType} from "./asset.type";
 
 export class AssetRepository {
 	async createAsset(
@@ -10,7 +11,7 @@ export class AssetRepository {
 		notes: string | null,
 		photo_url: string | null,
 		client: PoolClient
-	) {
+	) : Promise<{ name: string }> {
 
 		const result = await client.query(
 			`INSERT INTO master_asset (name, type, description, quantity, available_quantity, notes, photo_url, status) 
@@ -31,7 +32,7 @@ export class AssetRepository {
 	}
 
 	async updateAsset(
-		id: number,
+		id: string,
 		name: string,
 		type: string | null,
 		description: string | null,
@@ -40,7 +41,7 @@ export class AssetRepository {
 		notes: string | null,
 		photo_url: string | null,
 		client: PoolClient
-	) {
+	) : Promise<{ name: string } | null> {
 
 		const result = await client.query(
 			`UPDATE master_asset 
@@ -62,7 +63,7 @@ export class AssetRepository {
 		return result.rows[0];
 	}
 
-	async deleteAsset(id: number, client: PoolClient) {
+	async deleteAsset(id: string, client: PoolClient) {
 
 		const result = await client.query(
 			`UPDATE master_asset 
@@ -78,7 +79,7 @@ export class AssetRepository {
 		take: number = 50, 
 		skip: number = 0, 
 		client: PoolClient
-		) {
+		) : Promise<AssetType[] | null> {
 
 		const result = await client.query(
 			`SELECT * FROM master_asset WHERE status = 'A' LIMIT $1 OFFSET $2`,
@@ -88,7 +89,12 @@ export class AssetRepository {
 		return result.rows;
 	}
 
-    async getAssetLogs(id: number, client: PoolClient) {
+    async getAssetById(id: number, client: PoolClient) : Promise<AssetType | null> {
+		const result = await client.query(
+			`SELECT * FROM master_asset WHERE id = $1 AND status = 'A'`,
+			[id]
+		);
 
+		return result.rows[0];
     }
 }

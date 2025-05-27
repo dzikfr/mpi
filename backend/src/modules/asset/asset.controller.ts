@@ -9,7 +9,9 @@ export class AssetController {
   static async createAsset(req: Request, res: Response, next: NextFunction) {
     try {
       const validatedData = assetBodySchema.parse(req.body);
-      const result = await service.createAsset(validatedData);
+      const photo = req.file;
+      const photo_url = `${photo?.destination}${photo?.filename}`;
+      const result = await service.createAsset(validatedData, photo_url);
       res.status(201).json(apiResponse(true, "Asset created", result));
     } catch (err) {
       next(err);
@@ -19,8 +21,8 @@ export class AssetController {
   static async getAssets(req: Request, res: Response, next: NextFunction) {
     try {
       const get = {
-        skip : Number(req.params.skip),
-        take : Number(req.params.take)
+        skip : parseInt(req.query.take as string) || 0,
+        take : parseInt(req.query.skip as string) || 50
       }
       const result = await service.getAssets(get);
       res.status(200).json(apiResponse(true, "Assets fetched", result));
