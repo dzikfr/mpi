@@ -50,4 +50,27 @@ export class AuthService {
       client?.release();
     }
   }
+
+  async changePassword(userId: string, oldPassword: string, newPassword: string) : Promise<void> {
+    let client;
+    try {
+      client = await pool.connect();
+      const user = await this.authRepo.findUserByUsername(userId, client);
+      if (!user) {
+        throw new Error("User not found");
+      }
+      const isValid = await bcrypt.compare(oldPassword, user.password);
+      if (!isValid) {
+        throw new Error("Invalid old password");
+      }
+      const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+      const query = `UPDATE master_user SET password = $1 WHERE id = $2`;
+      await client.query(query, [hashedNewPassword, user.id]);
+    } catch (error) {
+      client?.query("ROLLBACK");
+      throw error;
+    } finally {
+      client?.release();
+    }
+  }
 }

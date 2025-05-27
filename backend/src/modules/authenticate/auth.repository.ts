@@ -61,4 +61,19 @@ export class AuthRepository {
     const result = await client.query(query);
     return result.rows;
   }
+
+  async changePassword(
+    userId: string,
+    newPassword: string,
+    client: PoolClient
+  ) : Promise<{id: string, username: string}> {
+    const query = `
+      UPDATE master_user 
+      SET password = $1 
+      WHERE id = $2 
+      RETURNING id, username
+    `;
+    const result = await client.query(query, [newPassword, userId]);
+    return result.rows[0];
+  }
 }

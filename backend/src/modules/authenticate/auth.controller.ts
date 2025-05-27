@@ -27,4 +27,26 @@ export class AuthController {
       next(err);
     }
   }
+
+  static async changePassword(req: Request, res: Response, next: NextFunction) : Promise<any> {
+    try {
+      const { userId } = req.params;
+      const { oldPassword, newPassword } = req.body;
+
+      if (!userId || !oldPassword || !newPassword) {
+        return res
+          .status(400)
+          .json(apiResponse(false, "Missing required fields"));
+      }
+
+      const result = await authService.changePassword(
+        userId,
+        oldPassword,
+        newPassword
+      );
+      res.status(200).json(apiResponse(true, "Password changed successfully", result));
+    } catch (err: any) {
+      next(err);
+    }
+  }
 }
