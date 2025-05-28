@@ -1,42 +1,64 @@
-// import { ProductBodyInput, ProductParamsInput } from "./volunteer.schema";
-// import { ProductRepository } from "./volunteer.repository";
-// import { pool } from "../../config/database";
+import bcrypt from "bcrypt";
+import { VolunteerBodyInput, VolunteerParamsInput } from "./volunteer.schema";
+import { VolunteerRepository } from "./volunteer.repository";
+import { pool } from "../../config/database";
 
-// export class ProductService {
-//   private productRepo = new ProductRepository();
+export class VolunteerService {
+  private volunteerRepo = new VolunteerRepository();
 
-//   async createProduct(input: ProductBodyInput) {
-//     const client = await pool.connect();
-//     try {
-//       await client.query("BEGIN");
+  async createVolunteer(input: VolunteerBodyInput, url_photo : string | null = null) {
+    let client = null;
+    try {
+      client = await pool.connect();
+      await client.query("BEGIN");
+      const hashedPassword = await bcrypt.hash(input.password, 10);
 
-//       const product = await this.productRepo.createProduct(
-//         input.product_name,
-//         input.price,
-//         input.type,
-//         input.stock,
-//         client
-//       );
+      const createUser = await this.volunteerRepo.createUser(
+        input.username,
+        hashedPassword,
+        client
+      )
+
+      const userId = createUser.id
+      const findIdRoleVolunteer = await this.volunteerRepo.findIdRoleVolunteer(client);
+
+      const createVolunteer = await this.volunteerRepo.createVolunteer(
+        userId,
+        findIdRoleVolunteer.id,
+        input.nik,
+        input.full_name,
+        input.address || null,
+        input.age || null,
+        input.email,
+        input.phone || null,
+        url_photo || null,
+        client
+      );
+
+      if (!createVolunteer) {
+        throw new Error("Failed to create volunteer");
+      }
       
-//       await client.query("COMMIT");
-//       return product;
-//     } catch (err) {
-//       await client.query("ROLLBACK");
-//       throw err;
-//     } finally {
-//       client.release();
-//     }
-//   }
+      await client.query("COMMIT");
+      return createVolunteer;
+    } catch (err) {
+      await client?.query("ROLLBACK");
+      throw err;
+    } finally {
+      client?.release();
+    }
+  }
 
-//   async getProducts() {
-//     const client = await pool.connect();
-//     try {
-//       const products = await this.productRepo.getProducts(client);
-//       return products;
-//     } finally {
-//       client.release();
-//     }
-//   }
+  async getVolunteers( get : { take : number, skip : number } ) {
+    let client = null;
+    try {
+      client = await pool.connect();
+      const result = await this.volunteerRepo.getVolunteers(get.take, get.skip, client);
+      return result;
+    } finally {
+      client?.release();
+    }
+  }
 
 //   async updateProduct(input: ProductParamsInput, body: ProductBodyInput) {
 //     const client = await pool.connect();
@@ -83,4 +105,4 @@
 //       client.release();
 //     }
 //   }
-// }
+}

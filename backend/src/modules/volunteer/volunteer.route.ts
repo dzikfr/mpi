@@ -1,11 +1,14 @@
-// import { Router } from "express";
-// import { ProductController } from "./volunteer.controller";
+import { Router } from "express";
+import { VolunteerController } from "./volunteer.controller";
+import upload from "../../config/multer";
+import { authenticateToken } from "../../middlewares/authenticate";
+import { checkPermission }  from "../../middlewares/checkPermission";
 
-// const router = Router();
+const router = Router();
 
-// router.post("/", ProductController.createProduct);
-// router.get("/", ProductController.getProducts);
+router.post("/", authenticateToken, checkPermission("admin") , upload.single("photo_url"), VolunteerController.createVolunteer);
+router.get("/", authenticateToken , VolunteerController.getVolunteers);
 // router.put("/:id_product", ProductController.updateProducts);
 // router.delete("/:id_product", ProductController.deleteProduct);
 
-// export default router;
+export default router;

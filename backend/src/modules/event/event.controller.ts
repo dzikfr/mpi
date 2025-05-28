@@ -9,8 +9,11 @@ export class EventController {
   static async createEvent(req: Request, res: Response, next: NextFunction) {
     try {
       const validatedData = eventBodySchema.parse(req.body);
-      const photo = req.file;
-      const photo_url = `${photo?.destination}${photo?.filename}`;
+      const photo = req.file ? req.file : null;
+      let photo_url = null;
+      if (photo) {
+        photo_url = `${photo?.destination}${photo?.filename}`;
+      }
       const result = await service.createEvent(validatedData, photo_url);
       res.status(201).json(apiResponse(true, "Event created", result));
     } catch (err) {

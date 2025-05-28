@@ -29,6 +29,10 @@ export class eventService extends taskService {
         client
       );
 
+      if (!result) {
+        throw new Error("Failed to create event");
+      }
+
       await client.query("COMMIT");
       return result;
     } catch (err) {
@@ -60,6 +64,10 @@ export class eventService extends taskService {
         photo_url,
         client
       );
+
+      if (!result) {
+        throw new Error("Failed to update event");
+      }
 
       await client.query("COMMIT");
       return result;
@@ -93,6 +101,11 @@ export class eventService extends taskService {
       }
 
       const result = await this.eventRepo.deleteEvent(id, client);
+
+      if (!result) {
+        throw new Error("Failed to delete event");
+      }
+
       return result;
     } finally {
       client?.release();
