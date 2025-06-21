@@ -39,7 +39,6 @@ create table public.fw_user_role (
 create table public.fw_user_volunteer (
   id uuid not null default gen_random_uuid (),
   ref_user_id uuid not null,
-  ref_role_id uuid not null,
   nik character varying not null,
   full_name character varying not null,
   address text null,
@@ -49,6 +48,14 @@ create table public.fw_user_volunteer (
   url_photo character varying null,
   created_at timestamp without time zone not null default CURRENT_TIMESTAMP,
   updated_at timestamp without time zone null,
+  status character(1) not null,
+  constraint master_volunteer_pkey primary key (id)
+) TABLESPACE pg_default;
+
+create table public.fw_user_role (
+  id uuid not null default gen_random_uuid (),
+  ref_user_id uuid not null,
+  ref_role_id uuid not null,
   status character(1) not null,
   constraint master_volunteer_pkey primary key (id)
 ) TABLESPACE pg_default;

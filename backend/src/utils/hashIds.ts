@@ -1,4 +1,5 @@
 import { generateRandomAlphanumeric } from "./generateRandomAlphanumeric";
+import crypto from "crypto";
 
 export const hashId = (id: string): string => {
   const id1 = id.substring(0, id.length - 5);
@@ -53,6 +54,57 @@ export const deepBulkHashId = (data: Record<string, any>): object => {
       }
     }
     return hashed;
+  } else {
+    return data;
+  }
+};
+
+const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY
+  ? Buffer.from(process.env.ENCRYPTION_KEY, "hex")
+  : crypto.randomBytes(32);
+const IV_LENGTH = 16;
+
+export const encryptId = (id: string): string => {
+  const iv = crypto.randomBytes(IV_LENGTH);
+  const cipher = crypto.createCipheriv("aes-256-cbc", ENCRYPTION_KEY, iv);
+  let encrypted = cipher.update(id.toString(), "utf8", "base64");
+  encrypted += cipher.final("base64");
+
+  const result = iv.toString("base64") + ":" + encrypted;
+  return result.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+};
+
+export const decryptId = (encrypted: string): string => {
+  const parts = encrypted.replace(/-/g, "+").replace(/_/g, "/").split(":");
+  const iv = Buffer.from(parts[0], "base64");
+  const encryptedText = Buffer.from(parts[1], "base64");
+
+  const decipher = crypto.createDecipheriv("aes-256-cbc", ENCRYPTION_KEY, iv);
+  let decrypted = decipher.update(encryptedText, undefined, "utf8");
+  decrypted += decipher.final("utf8");
+
+  return decrypted;
+};
+
+export const deepBulkEncryptId = (data: any): any => {
+  if (Array.isArray(data)) {
+    return data.map(deepBulkEncryptId);
+  } else if (data && typeof data === "object" && !(data instanceof Date)) {
+    const encrypted: { [key: string]: any } = {};
+    for (const key in data) {
+      const value = data[key];
+
+      if (key.endsWith("_id") && typeof value === "string") {
+        encrypted[key] = encryptId(value);
+      } else if (Array.isArray(value)) {
+        encrypted[key] = value.map(deepBulkEncryptId);
+      } else if (value && typeof value === "object") {
+        encrypted[key] = deepBulkEncryptId(value);
+      } else {
+        encrypted[key] = value;
+      }
+    }
+    return encrypted;
   } else {
     return data;
   }

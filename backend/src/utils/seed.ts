@@ -57,8 +57,8 @@ async function seed() {
     //masukkan ke user role untuk admin
     const insertUserRole = await client.query(
       `
-      INSERT INTO fw_user_role (ref_user_id, ref_role_id)
-      VALUES ($1, $2)
+      INSERT INTO fw_user_role (ref_user_id, ref_role_id, status)
+      VALUES ($1, $2, 'A')
       RETURNING id
       `,
       [insertSuperAdmin.rows[0].id, adminId]
