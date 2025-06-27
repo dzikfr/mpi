@@ -13,17 +13,14 @@ const Sidebar: React.FC = () => {
         <NavLink to="/dashboard" className={navLinkClass}>
           Dashboard
         </NavLink>
-        <NavLink to="/product" className={navLinkClass}>
-          Product
+        <NavLink to="/event" className={navLinkClass}>
+          Event
         </NavLink>
-        <NavLink to="/company" className={navLinkClass}>
-          Company
+        <NavLink to="/asset" className={navLinkClass}>
+          Asset
         </NavLink>
-        <NavLink to="/customer" className={navLinkClass}>
-          Customers
-        </NavLink>
-        <NavLink to="/invoice" className={navLinkClass}>
-          Invoice
+        <NavLink to="/volunteer" className={navLinkClass}>
+          Volunteer
         </NavLink>
       </nav>
     </aside>

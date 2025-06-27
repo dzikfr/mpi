@@ -3,11 +3,10 @@ import LoginPage from "./pages/LoginPage";
 import Layout from "./components/commons/Layout";
 import DashboardPage from "./pages/DashboardPage";
 import NotFoundPage from "./pages/NotFoundPage";
-import ProductPage from "./pages/ProductPage";
-import CompanyPage from "./pages/CompanyPage";
-import CustomerPage from "./pages/CustomerPage"
-import InvoicePage from "./pages/InvoicePage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import EventPage from "./pages/EventPage";
+import AssetPage from "./pages/AssetPage";
+import VolunteerPage from "./pages/VolunteerPage";
 
 function App() {
   return (
@@ -18,11 +17,9 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route element={<Layout />}>
             <Route path="dashboard" element={<DashboardPage />} />
-
-            <Route path="product" element={<ProductPage />}/>
-            <Route path="company" element={<CompanyPage />}/>
-            <Route path="customer" element={<CustomerPage />}/>
-            <Route path="invoice" element={<InvoicePage />}/>
+            <Route path="event" element={<EventPage />} />
+            <Route path="asset" element={<AssetPage />} />
+            <Route path="volunteer" element={<VolunteerPage />} />
           </Route>
         </Route>
 

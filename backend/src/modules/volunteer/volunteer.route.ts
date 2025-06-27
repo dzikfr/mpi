@@ -6,7 +6,7 @@ import { checkPermission }  from "../../middlewares/checkPermission";
 
 const router = Router();
 
-router.post("/", authenticateToken, checkPermission("admin") , upload.single("photo_url"), VolunteerController.createVolunteer);
+router.post("/", authenticateToken, checkPermission("admin") , upload.single("url_photo"), VolunteerController.createVolunteer);
 router.get("/", authenticateToken , VolunteerController.getVolunteers);
 // router.put("/:id_product", ProductController.updateProducts);
 // router.delete("/:id_product", ProductController.deleteProduct);

@@ -50,9 +50,10 @@ export class eventService extends taskService {
       client = await pool.connect();
       await client.query("BEGIN");
 
-      const checkEvent = await this.checkEventByName(input.name);
-      if (checkEvent) {
-        throw new Error("Event name already exists");
+      const checkEventId = await this.checkEventById(originalId(id));
+      
+      if (!checkEventId) {
+        throw new Error("Event not found");
       }
 
       const result = await this.eventRepo.updateEvent(
@@ -116,7 +117,7 @@ export class eventService extends taskService {
   async checkEventById(id: string) {
     const client = await pool.connect();
     try {
-      const result = await this.eventRepo.checkExists("id", originalId(id), client);
+      const result = await this.eventRepo.checkExists("id", id, client);
       return result;
     } finally {
       client.release();

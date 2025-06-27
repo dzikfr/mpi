@@ -89,7 +89,7 @@ export class assetService {
     let client
     try {
       client = await pool.connect();
-      const checkAsset = await this.checkAssetById(originalId(id));
+      const checkAsset = await this.checkAssetById(id);
       if (!checkAsset) {
         throw new Error("Asset not found");
       }

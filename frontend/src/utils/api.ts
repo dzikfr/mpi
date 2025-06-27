@@ -9,12 +9,15 @@ export const apiRequest = async (
 ) => {
   const token = sessionStorage.getItem("token");
 
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
   const config: AxiosRequestConfig = {
     method,
     url: `${API_BASE_URL}${url}`,
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    headers,
     ...(data && { data }),
   };
 

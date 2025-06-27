@@ -14,8 +14,8 @@ export class VolunteerController {
       if (photo) {
         photo_url = `${photo?.destination}${photo?.filename}`;
       }
-      const product = await volunteerService.createVolunteer(validated, photo_url);
-      res.status(201).json(apiResponse(true, "Volunteers created", product));
+      const result = await volunteerService.createVolunteer(validated, photo_url);
+      res.status(201).json(apiResponse(true, "Volunteers created", result));
     } catch (err) {
       next(err);
     }
