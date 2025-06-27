@@ -2,6 +2,7 @@ import { TaskBodyInput, TaskParamsInput, TaskUpdateBodyInput } from "./task.sche
 import { TaskRepository } from "./task.repository";
 import { pool } from "../../../config/database";
 import { PaginationParams }  from "../../../types/shared/pagination";
+import { deepBulkHashId, originalId } from "../../../helpers/hashId";
 
 export class taskService {
   private Repo = new TaskRepository();
@@ -45,7 +46,7 @@ export class taskService {
       const assetName = "dummy"
 
       const result = await this.Repo.updateTask(
-        id,
+        originalId(id),
         input.ref_updater_id,
         input.name,
         input.due_at,
@@ -70,7 +71,7 @@ export class taskService {
     try {
       client = await pool.connect();
       const result = await this.Repo.getTasks(ref_event_id, input.take, input.skip, client);
-      return result;
+      return result ? deepBulkHashId(result) : [];
     } finally {
       client?.release();
     }
@@ -80,7 +81,7 @@ export class taskService {
     let client
     try {
       client = await pool.connect();
-      const result = await this.Repo.deleteTask(id, client);
+      const result = await this.Repo.deleteTask(originalId(id), client);
       return result;
     } finally {
       client?.release();

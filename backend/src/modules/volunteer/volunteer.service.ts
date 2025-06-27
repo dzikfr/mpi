@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import { VolunteerBodyInput, VolunteerParamsInput } from "./volunteer.schema";
 import { VolunteerRepository } from "./volunteer.repository";
 import { pool } from "../../config/database";
+import { deepBulkHashId, originalId } from "../../helpers/hashId";
 
 export class VolunteerService {
   private volunteerRepo = new VolunteerRepository();
@@ -13,6 +14,12 @@ export class VolunteerService {
       await client.query("BEGIN");
       const hashedPassword = await bcrypt.hash(input.password, 10);
 
+      const checkVolunteer = await this.volunteerRepo.checkUniqueExists(input.nik, input.email, input.phone, client);
+
+      if (checkVolunteer) {
+        throw new Error("Volunteer with the same NIK, email, or phone already exists");
+      }
+
       const createUser = await this.volunteerRepo.createUser(
         input.username,
         hashedPassword,
@@ -20,11 +27,11 @@ export class VolunteerService {
       )
 
       const userId = createUser.id
-      const findIdRoleVolunteer = await this.volunteerRepo.findIdRoleVolunteer(client);
+      // const findIdRoleVolunteer = await this.volunteerRepo.findIdRoleVolunteer(client);
 
       const createVolunteer = await this.volunteerRepo.createVolunteer(
         userId,
-        findIdRoleVolunteer.id,
+        // findIdRoleVolunteer.id,
         input.nik,
         input.full_name,
         input.address || null,
@@ -54,7 +61,7 @@ export class VolunteerService {
     try {
       client = await pool.connect();
       const result = await this.volunteerRepo.getVolunteers(get.take, get.skip, client);
-      return result;
+      return result ? deepBulkHashId(result) : [];
     } finally {
       client?.release();
     }

@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import { pool } from "../../config/database";
 import { AuthRepository } from "./auth.repository";
 import { LoginInput, RegisterInput } from "./auth.schema";
-import { hashId } from "../../utils/hashIds";
 
 export class AuthService {
   private authRepo = new AuthRepository();

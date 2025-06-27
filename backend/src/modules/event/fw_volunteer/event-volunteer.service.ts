@@ -2,6 +2,7 @@ import { EventVolunteerBodyInput, EventVolunteerParamsInput, EventVolunteerUpdat
 import { EventVolunteerRepository } from "./event-volunteer.repository";
 import { pool } from "../../../config/database";
 import { PaginationParams }  from "../../../types/shared/pagination";
+import { deepBulkHashId, originalId } from "../../../helpers/hashId";
 
 export class EventVolunteerService {
   private Repo = new EventVolunteerRepository();
@@ -42,7 +43,7 @@ export class EventVolunteerService {
       await client.query("BEGIN");
 
       const result = await this.Repo.updateEventVolunteer(
-        id,
+        originalId(id),
         input.registered_at,
         input.verified_at || null,
         input.notes || null,
@@ -64,7 +65,7 @@ export class EventVolunteerService {
     try {
       client = await pool.connect();
       const result = await this.Repo.getEventsVolunteer(ref_event_id, input.take, input.skip, client);
-      return result;
+      return result ? deepBulkHashId(result) : [];
     } finally {
       client?.release();
     }
@@ -74,7 +75,7 @@ export class EventVolunteerService {
     let client
     try {
       client = await pool.connect();
-      const result = await this.Repo.deleteEventVolunteer(id, client);
+      const result = await this.Repo.deleteEventVolunteer(originalId(id), client);
       return result;
     } finally {
       client?.release();

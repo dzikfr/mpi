@@ -16,4 +16,4 @@ router.delete("/:id", authenticateToken, checkPermission("admin") , EventControl
 router.use("/:ref_event_id/tasks", taskRoutes);
 router.use("/:ref_event_id/volunteers", eventVolunteerRoutes);
 
-export default router;
+export default router;  

@@ -3,6 +3,7 @@ import { ZodError } from "zod";
 import { formatZodError } from "../utils/formatZodError";
 
 export const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+  console.error("Error caught:", err); 
   if (err instanceof ZodError) {
     res.status(400).json({
       success: false,

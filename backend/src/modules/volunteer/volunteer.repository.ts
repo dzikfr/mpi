@@ -16,7 +16,7 @@ export class VolunteerRepository {
 
 	async createVolunteer(
 		ref_user_id : string,
-		ref_role_id : string,
+		// ref_role_id : string,
 		nik : string,
 		full_name: string,
 		address : string | null,
@@ -29,14 +29,14 @@ export class VolunteerRepository {
 
 		const result = await client.query(
 		`INSERT INTO fw_user_volunteer 
-			(ref_user_id, ref_role_id, nik, full_name, address, age, email, phone, url_photo, created_at, status) 
-      	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 now(), $10) RETURNING id, ref_user_id, full_name`,
+			(ref_user_id, nik, full_name, address, age, email, phone, url_photo, created_at, status) 
+      	VALUES ($1, $2, $3, $4, $5, $6, $7, $8, now(), $9) RETURNING id, ref_user_id, full_name`,
 			[
         ref_user_id,
-		ref_role_id,
+		// ref_role_id,
         nik,
         full_name,
-        address,
+        address,	
         age,
         email,
         phone,
@@ -143,4 +143,18 @@ export class VolunteerRepository {
 		return result.rows;
 	}
 
+	async checkUniqueExists(
+		nik: string | null,
+		email: string | null,
+		phone: string | null | undefined,
+		client: PoolClient
+	) : Promise<boolean> {
+		const query = `
+			SELECT * FROM fw_user_volunteer 
+			WHERE (nik = $1 OR email = $2 OR phone = $3) AND status = 'A'
+		`;
+		const values = [nik, email, phone];
+		const result = await client.query(query, values);
+		return result.rows.length > 0;
+	}
 }

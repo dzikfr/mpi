@@ -1,8 +1,9 @@
 import { EventBodyInput, EventParamsInput } from "./event.schema";
 import { EventRepository } from "./event.repository";
 import { pool } from "../../config/database";
-import {PaginationParams}  from "../../types/shared/pagination";
+import { PaginationParams }  from "../../types/shared/pagination";
 import { taskService } from "./fw_task/task.service";
+import { deepBulkHashId, originalId } from "../../helpers/hashId";
 
 export class eventService extends taskService {
   private eventRepo = new EventRepository();
@@ -14,7 +15,7 @@ export class eventService extends taskService {
 
       await client.query("BEGIN");
       
-      const checkEvent = await this.checkEventById(input.name);
+      const checkEvent = await this.checkEventByName(input.name);
       if (checkEvent) {
         throw new Error("Event name already exists");
       }
@@ -55,7 +56,7 @@ export class eventService extends taskService {
       }
 
       const result = await this.eventRepo.updateEvent(
-        id,
+        originalId(id),
         input.name,
         input.description || null,
         input.notes || null,
@@ -84,7 +85,7 @@ export class eventService extends taskService {
     try {
       client = await pool.connect();
       const result = await this.eventRepo.getEvents(input.take, input.skip, client);
-      return result;
+      return deepBulkHashId(result);
     } finally {
       client?.release();
     }
@@ -94,13 +95,13 @@ export class eventService extends taskService {
     let client
     try {
       client = await pool.connect();
-      const checkEvent = await this.checkEventById(id);
+      const checkEvent = await this.checkEventById(originalId(id));
       
       if (!checkEvent) {
         throw new Error("Event not found");
       }
 
-      const result = await this.eventRepo.deleteEvent(id, client);
+      const result = await this.eventRepo.deleteEvent(originalId(id), client);
 
       if (!result) {
         throw new Error("Failed to delete event");
@@ -115,7 +116,7 @@ export class eventService extends taskService {
   async checkEventById(id: string) {
     const client = await pool.connect();
     try {
-      const result = await this.eventRepo.checkExists("id", id, client);
+      const result = await this.eventRepo.checkExists("id", originalId(id), client);
       return result;
     } finally {
       client.release();

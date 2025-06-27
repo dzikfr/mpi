@@ -6,7 +6,7 @@ export const volunteerBodySchema = z.object({
   nik: z.string().min(1, "NIK is required"),
   full_name: z.string().min(1, "Full name is required"),
   address: z.string().nullable().optional(),
-  age: z.number().nullable().optional(),
+  age: z.coerce.number().nullable().optional(),
   email: z.string().email("Invalid email").min(1, "Email is required"),
   phone: z.string().nullable().optional(),
 });

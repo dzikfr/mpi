@@ -1,7 +1,9 @@
 import { AssetBodyInput, AssetParamsInput } from "./asset.schema";
 import { AssetRepository } from "./asset.repository";
 import { pool } from "../../config/database";
-import {PaginationParams}  from "../../types/shared/pagination";
+import { PaginationParams }  from "../../types/shared/pagination";
+import { deepBulkHashId, originalId } from "../../helpers/hashId";
+
 
 export class assetService {
   private Repo = new AssetRepository();
@@ -51,7 +53,7 @@ export class assetService {
       }
 
       const result = await this.Repo.updateAsset(
-        id,
+        originalId(id),
         input.name,
         input.type || null,
         input.description || null,
@@ -77,7 +79,7 @@ export class assetService {
     try {
       client = await pool.connect();
       const result = await this.Repo.getAssets(input.take, input.skip, client);
-      return result;
+      return result ? deepBulkHashId(result) : null;
     } finally {
       client?.release();
     }
@@ -87,11 +89,11 @@ export class assetService {
     let client
     try {
       client = await pool.connect();
-      const checkAsset = await this.checkAssetById(id);
+      const checkAsset = await this.checkAssetById(originalId(id));
       if (!checkAsset) {
         throw new Error("Asset not found");
       }
-      const result = await this.Repo.deleteAsset(id, client);
+      const result = await this.Repo.deleteAsset(originalId(id), client);
       return result;
     } finally {
       client?.release();
@@ -101,7 +103,7 @@ export class assetService {
   async checkAssetById(id: string) {
     const client = await pool.connect();
     try {
-      const result = await this.Repo.checkExists("id", id, client);
+      const result = await this.Repo.checkExists("id", originalId(id), client);
       return result;
     } finally {
       client.release();
