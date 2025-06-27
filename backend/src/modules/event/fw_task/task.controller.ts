@@ -26,8 +26,8 @@ export class TaskController {
         skip : parseInt(req.query.take as string) || 0,
         take : parseInt(req.query.skip as string) || 50
       }
-      const ref_company_id = req.params.ref_company_id as string;
-      const result = await service.getTasks(ref_company_id, get);
+      const ref_event_id = req.params.ref_event_id as string;
+      const result = await service.getTasks(ref_event_id, get);
       res.status(200).json(apiResponse(true, "Tasks fetched", result));
     } catch (err) {
       next(err);

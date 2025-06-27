@@ -8,8 +8,8 @@ export const taskBodySchema = z.object({
   ref_assigner_id: z.string().nullable().optional(),
   ref_updater_id: z.string().nullable().optional(),
   name: z.string().min(1, "Task name is required"),
-  due_at: z.date().nullable().optional(),
-  completed_at: z.date().nullable().optional(),
+  due_at: z.coerce.date().nullable().optional(),
+  completed_at: z.coerce.date().nullable().optional(),
   notes: z.string().nullable().optional(),
   status: z.enum(statusValues, {
     required_error: "Status is required",

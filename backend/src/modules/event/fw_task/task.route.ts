@@ -3,7 +3,7 @@ import { TaskController } from "./task.controller";
 import { authenticateToken } from "../../../middlewares/authenticate";
 import { checkPermission }  from "../../../middlewares/checkPermission";
 
-const router = Router();
+const router = Router({mergeParams: true});
 
 router.post("/", authenticateToken, checkPermission("admin") , TaskController.createTask);
 router.get("/", authenticateToken , TaskController.getTasks);

@@ -3,7 +3,7 @@ import { EventVolunteerController } from "./event-volunteer.controller";
 import { authenticateToken } from "../../../middlewares/authenticate";
 import { checkPermission }  from "../../../middlewares/checkPermission";
 
-const router = Router();
+const router = Router({ mergeParams: true });
 
 router.post("/", authenticateToken, checkPermission("admin") , EventVolunteerController.createEvent);
 router.get("/", authenticateToken , EventVolunteerController.getEventVolunteers);

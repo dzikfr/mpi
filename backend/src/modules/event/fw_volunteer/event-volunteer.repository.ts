@@ -18,7 +18,7 @@ export class EventVolunteerRepository {
         volunteers.forEach((v, i) => {
             const idx = i * 7;
             placeholders.push(
-            `($${idx + 1}, $${idx + 2}, $${idx + 3}, $${idx + 4}, $${idx + 5}, $${idx + 6}, now(), $${idx + 7})`
+            `($${idx + 1}, $${idx + 2}, $${idx + 3}, $${idx + 4}, $${idx + 5}, $${idx + 6}, $${idx + 7})`
             );
             values.push(
             v.event_id,
@@ -33,9 +33,8 @@ export class EventVolunteerRepository {
 
         const query = `
             INSERT INTO fw_volunteer_event (
-            event_id, volunteer_id, registered_at,
-            verified_at, ref_verified_id, notes,
-            created_at, status
+            ref_event_id, ref_volunteer_id, registered_at,
+            verified_at, ref_verified_id, notes, status
             )
             VALUES ${placeholders.join(', ')}
             RETURNING ref_event_id, ref_volunteer_id

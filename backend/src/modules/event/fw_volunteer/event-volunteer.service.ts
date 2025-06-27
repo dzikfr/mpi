@@ -14,11 +14,11 @@ export class EventVolunteerService {
     await client.query("BEGIN");
 
     const volunteers = inputs.map((input) => ({
-      event_id: input.ref_event_id,
-      volunteer_id: input.ref_volunteer_id,
+      event_id: originalId(input.ref_event_id),
+      volunteer_id: originalId(input.ref_volunteer_id),
       registered_at: input.registered_at,
       verified_at: input.verified_at || null,
-      ref_verified_id: input.ref_verified_id || null,
+      ref_verified_id: input.ref_verified_id ? originalId(input.ref_verified_id) : null,
       notes: input.notes || null
     }));
 
@@ -64,7 +64,8 @@ export class EventVolunteerService {
     let client
     try {
       client = await pool.connect();
-      const result = await this.Repo.getEventsVolunteer(ref_event_id, input.take, input.skip, client);
+            console.log('id : ->',ref_event_id);
+      const result = await this.Repo.getEventsVolunteer(originalId(ref_event_id), input.take, input.skip, client);
       return result ? deepBulkHashId(result) : [];
     } finally {
       client?.release();

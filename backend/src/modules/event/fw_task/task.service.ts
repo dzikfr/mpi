@@ -14,7 +14,7 @@ export class taskService {
     await client.query("BEGIN");
 
     const tasks = inputs.map((input) => ({
-      ref_event_id: input.ref_event_id,
+      ref_event_id: originalId(input.ref_event_id),
       ref_assigner_id,
       name: input.name,
       due_at: input.due_at,
@@ -70,7 +70,7 @@ export class taskService {
     let client
     try {
       client = await pool.connect();
-      const result = await this.Repo.getTasks(ref_event_id, input.take, input.skip, client);
+      const result = await this.Repo.getTasks(originalId(ref_event_id), input.take, input.skip, client);
       return result ? deepBulkHashId(result) : [];
     } finally {
       client?.release();
