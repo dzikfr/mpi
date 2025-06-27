@@ -4,6 +4,7 @@ import path from "path";
 import { errorHandler } from "./middlewares/errorHandler";
 import { logger } from "./config/logger";
 import { corsMiddleware } from "./config/cors";
+import cors from "cors";
 
 const app = express();
 const router = Router();
@@ -11,7 +12,8 @@ const router = Router();
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(corsMiddleware);
+// app.use(corsMiddleware);
+app.use(cors())
 app.use(logger);
 
 // Static files
