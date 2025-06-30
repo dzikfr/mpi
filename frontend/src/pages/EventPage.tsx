@@ -17,6 +17,7 @@ const EventPage: React.FC = () => {
 	const [isEdit, setIsEdit] = useState(false);
 	const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 	const [searchQuery, setSearchQuery] = useState("");
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
 	const [form, setForm] = useState<Omit<Event, "id" | "photo_url">>({
 		name: "",
 		description: "",
@@ -25,6 +26,16 @@ const EventPage: React.FC = () => {
 		date_end: "",
 	});
 	const [file, setFile] = useState<File | null>(null);
+
+  const [taskForm, setTaskForm] = useState({
+    name: "",
+    due_at: "",
+    completed_at: "",
+    notes: "",
+    status: false,
+  });
+
+  const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
 
 	const fetchEvents = async () => {
 		const res = await apiRequest("GET", "/api/event");
@@ -37,6 +48,16 @@ const EventPage: React.FC = () => {
 			[e.target.name]: e.target.value,
 		});
 	};
+
+  const handleTaskInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+	const { name, value, type } = e.target;
+	setTaskForm((prev) => ({
+	  ...prev,
+	  [name]: type === "checkbox"
+		? (e.target as HTMLInputElement).checked
+		: value,
+	}));
+  };
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files?.[0]) setFile(e.target.files[0]);
@@ -58,6 +79,23 @@ const EventPage: React.FC = () => {
 		closeModal();
 		fetchEvents();
 	};
+
+  const handleSubmitTask = async () => {
+    if (!selectedEventId) return;
+
+    const body = {
+      ref_event_id: selectedEventId,
+      name: taskForm.name,
+      due_at: taskForm.due_at,
+      completed_at: taskForm.completed_at,
+      notes: taskForm.notes,
+      status: taskForm.status ? "A" : "P",
+    };
+
+    await apiRequest("POST", `/api/event/${selectedEventId}/tasks/`, body);
+    setIsTaskModalOpen(false);
+    setTaskForm({ name: "", due_at: "", completed_at: "", notes: "", status: false });
+  };
 
 	const handleDelete = async (id: string) => {
 		if (confirm("Yakin mau hapus event ini?")) {
@@ -163,6 +201,15 @@ const EventPage: React.FC = () => {
 						)}
 					</td>
 					<td className="px-4 py-2 border space-x-2">
+            <button
+              onClick={() => {
+                setSelectedEventId(ev.id);
+                setIsTaskModalOpen(true);
+              }}
+              className="bg-blue-600 text-white px-2 py-1 rounded hover:bg-base-200"
+            >
+              Add Task
+            </button>
 						<button
 							onClick={() => openEditModal(ev)}
 							className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-base-200 transition"
@@ -205,6 +252,34 @@ const EventPage: React.FC = () => {
 			</div>
 		</div>
 	)}
+
+  {isTaskModalOpen && (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-black p-6 rounded-lg w-[90%] max-w-md shadow-lg">
+        <h2 className="text-xl font-semibold mb-4">Add Task to Event</h2>
+        <div className="space-y-3">
+          <input name="name" value={taskForm.name} onChange={handleTaskInputChange} placeholder="Task Name" className="w-full border p-2 rounded" />
+          <input name="due_at" type="datetime-local" value={taskForm.due_at} onChange={handleTaskInputChange} className="w-full border p-2 rounded" />
+          <input name="completed_at" type="datetime-local" value={taskForm.completed_at} onChange={handleTaskInputChange} className="w-full border p-2 rounded" />
+          <textarea name="notes" value={taskForm.notes} onChange={handleTaskInputChange} placeholder="Notes" className="w-full border p-2 rounded" />
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              name="status"
+              checked={taskForm.status}
+              onChange={handleTaskInputChange}
+            />
+            <span>Completed</span>
+          </label>
+        </div>
+        <div className="mt-6 flex justify-end space-x-2">
+          <button onClick={() => setIsTaskModalOpen(false)} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
+          <button onClick={handleSubmitTask} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">Submit Task</button>
+        </div>
+      </div>
+    </div>
+  )}
+
 	</div>
 	);
 };
