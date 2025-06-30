@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { apiRequest } from "../utils/api";
 
 type Volunteer = {
@@ -30,6 +30,7 @@ const VolunteerPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedVolunteer, setSelectedVolunteer] = useState<Volunteer | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const fetchVolunteers = async () => {
     const res = await apiRequest("GET", "/api/volunteer");
@@ -115,11 +116,34 @@ const VolunteerPage: React.FC = () => {
     fetchVolunteers();
   }, []);
 
+  const filteredVolunteers = useMemo(() => {
+    return volunteers.filter((volunteer) =>
+      volunteer.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      volunteer.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      volunteer.nik.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      volunteer.address.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [volunteers, searchQuery]);
+
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-semibold">Volunteer List</h1>
-        <button onClick={openAddModal} className="bg-blue-600 text-white px-4 py-2 rounded">Add Volunteer</button>
+        <div className="flex gap-2">
+          <input
+            type="text"
+            placeholder="Search volunteers..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="px-3 py-2 border rounded-md text-black"
+          />
+          <button
+            onClick={openAddModal}
+            className="bg-white text-black px-4 py-2 rounded-md hover:bg-base-200 hover:text-white"
+          >
+            Add Volunteer
+          </button>
+        </div>
       </div>
 
       <table className="min-w-full border text-sm text-left">
@@ -133,7 +157,7 @@ const VolunteerPage: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {volunteers.map((v, i) => (
+          {filteredVolunteers.map((v, i) => (
             <tr key={v.id}>
               <td className="border px-3 py-2">{i + 1}</td>
               <td className="border px-3 py-2">{v.full_name}</td>
