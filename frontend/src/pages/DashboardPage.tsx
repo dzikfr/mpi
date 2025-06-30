@@ -12,7 +12,7 @@ import {
 } from "chart.js";
 import { Bar, Line } from "react-chartjs-2";
 
-// Registrasi komponen Chart.js
+// Registrasi chart components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -24,7 +24,7 @@ ChartJS.register(
   Legend
 );
 
-// Data dummy
+// Dummy data
 const data = {
   labels: ["January", "February", "March", "April", "May"],
   datasets: [
@@ -34,7 +34,7 @@ const data = {
       backgroundColor: "rgba(54, 162, 235, 0.6)",
       borderColor: "rgba(54, 162, 235, 1)",
       fill: true,
-      tension: 0.3,
+      tension: 0, // << tajam, tidak rounded
     },
     {
       label: "Total Success",
@@ -42,20 +42,35 @@ const data = {
       backgroundColor: "rgba(255, 99, 132, 0.6)",
       borderColor: "rgba(255, 99, 132, 1)",
       fill: true,
-      tension: 0.3,
+      tension: 0, // << tajam juga
     },
   ],
 };
 
-// Opsi chart
-// const options = {
-//   responsive: true,
-//   plugins: {
-//     legend: {
-//       position: "top" as const,
-//     },
-//   },
-// };
+// Bar chart opsi horizontal
+const horizontalBarOptions = {
+  indexAxis: "y" as const, // << horizontal bar
+  responsive: true,
+  plugins: {
+    legend: { position: "top" as const },
+    title: {
+      display: true,
+      text: "Event & Success",
+    },
+  },
+};
+
+// Line chart opsi tajam
+const lineOptions = {
+  responsive: true,
+  plugins: {
+    legend: { position: "top" as const },
+    title: {
+      display: true,
+      text: "Event & Success)",
+    },
+  },
+};
 
 const DashboardPage: React.FC = () => {
   return (
@@ -63,11 +78,11 @@ const DashboardPage: React.FC = () => {
       <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
 
       <div className="flex flex-wrap gap-6">
-        <div className="w-full  bg-base p-4 rounded shadow">
-          <Bar data={data} />
+        <div className="w-full bg-base p-4 rounded shadow">
+          <Line data={data} options={lineOptions} />
         </div>
         <div className="w-full bg-base p-4 rounded shadow">
-          <Line data={data} />
+          <Bar data={data} options={horizontalBarOptions} />
         </div>
       </div>
     </div>
