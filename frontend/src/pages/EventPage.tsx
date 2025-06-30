@@ -18,6 +18,8 @@ const EventPage: React.FC = () => {
 	const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
 	const [searchQuery, setSearchQuery] = useState("");
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [isViewTaskModalOpen, setIsViewTaskModalOpen] = useState(false);
+  const [tasksForEvent, setTasksForEvent] = useState<any[]>([]);
 	const [form, setForm] = useState<Omit<Event, "id" | "photo_url">>({
 		name: "",
 		description: "",
@@ -50,13 +52,19 @@ const EventPage: React.FC = () => {
 	};
 
   const handleTaskInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-	const { name, value, type } = e.target;
-	setTaskForm((prev) => ({
-	  ...prev,
-	  [name]: type === "checkbox"
-		? (e.target as HTMLInputElement).checked
-		: value,
-	}));
+    const { name, value, type } = e.target;
+    setTaskForm((prev) => ({
+      ...prev,
+      [name]: type === "checkbox"
+      ? (e.target as HTMLInputElement).checked
+      : value,
+    }));
+  };
+
+  const handleViewTasks = async (eventId: string) => {
+    const res = await apiRequest("GET", `/api/event/${eventId}/tasks/`);
+    setTasksForEvent(res.data || []);
+    setIsViewTaskModalOpen(true);
   };
 
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -210,6 +218,12 @@ const EventPage: React.FC = () => {
             >
               Add Task
             </button>
+            <button
+              onClick={() => handleViewTasks(ev.id)}
+              className="bg-indigo-600 text-white px-2 py-1 rounded hover:bg-base-200"
+            >
+              View Tasks
+            </button>
 						<button
 							onClick={() => openEditModal(ev)}
 							className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-base-200 transition"
@@ -253,6 +267,7 @@ const EventPage: React.FC = () => {
 		</div>
 	)}
 
+  {/* Add Task Modal */}
   {isTaskModalOpen && (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-black p-6 rounded-lg w-[90%] max-w-md shadow-lg">
@@ -280,6 +295,40 @@ const EventPage: React.FC = () => {
     </div>
   )}
 
+  {/* View Task Modal */}
+  {isViewTaskModalOpen && (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div className="bg-black p-6 rounded-lg w-[90%] max-w-md shadow-lg">
+        <h2 className="text-xl font-semibold mb-4">Task List</h2>
+        {tasksForEvent.length === 0 ? (
+          <p className="text-sm text-gray-300">No tasks found for this event.</p>
+        ) : (
+          <ul className="space-y-3">
+            {tasksForEvent.map((task) => (
+              <li key={task.id} className="border p-3 rounded bg-base-200">
+                <div className="flex items-center justify-between">
+                  <span className={task.status === "A" ? "line-through text-green-400" : ""}>
+                    {task.name}
+                  </span>
+                  <input type="checkbox" checked={task.status === "A"} readOnly className="checkbox" />
+                </div>
+                <div className="text-xs text-gray-400 mt-1">
+                  Due: {task.due_at?.slice(0, 16).replace("T", " ")} <br />
+                  Completed: {task.completed_at?.slice(0, 16).replace("T", " ")}
+                </div>
+                {task.notes && <div className="text-sm mt-1 text-white">📝 {task.notes}</div>}
+              </li>
+            ))}
+          </ul>
+        )}
+        <div className="mt-6 flex justify-end">
+          <button onClick={() => setIsViewTaskModalOpen(false)} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  )}
 	</div>
 	);
 };
