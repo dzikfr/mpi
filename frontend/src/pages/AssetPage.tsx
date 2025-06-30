@@ -120,76 +120,77 @@ const AssetPage: React.FC = () => {
 
 
 	return (
-		<div className="p-6">
-			<div className="flex justify-between items-center mb-4">
-				<h1 className="text-2xl font-semibold">Assets List</h1>
-				<div className="flex gap-2">
-					<input
-						type="text"
-						placeholder="Search assets..."
-						value={searchQuery}
-						onChange={(e) => setSearchQuery(e.target.value)}
-						className="px-3 py-2 border rounded-md text-black"
-					/>
-					<button
-						onClick={openAddModal}
-						className="bg-white text-black px-4 py-2 rounded-md hover:bg-base-200 hover:text-white"
-					>
-						Add Asset
-					</button>
-				</div>
-				</div>
+    <div className="p-6">
+      <div className="mb-4">
+        <h1 className="text-2xl font-semibold mb-2">Assets List</h1>
+
+          <div className="flex justify-between items-center">
+            <input
+              type="text"
+              placeholder="Search assets..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="px-3 py-2 border rounded-md text-white w-1/4"
+            />
+            <button
+              onClick={openAddModal}
+              className="bg-white text-black px-4 py-2 rounded-md hover:bg-base-200 hover:text-white"
+            >
+              Add Asset
+            </button>
+          </div>
+      </div>
 
 
-	<table className="min-w-full border text-sm text-left">
-		<thead className="bg-base-600">
-			<tr>
-				<th className="px-4 py-2 border">No.</th>
-				<th className="px-4 py-2 border">Image</th>
-				<th className="px-4 py-2 border">Name</th>
-				<th className="px-4 py-2 border">Type</th>
-				<th className="px-4 py-2 border">Qty</th>
-				<th className="px-4 py-2 border">Available</th>
-				<th className="px-4 py-2 border">Notes</th>
-				<th className="px-4 py-2 border">Actions</th>
-			</tr>
-		</thead>
-		<tbody>
-			{filteredAssets.map((asset, i) => (
-				<tr key={asset.id}>
-					<td className="px-4 py-2 border">{i + 1}</td>
-					<td className="px-4 py-2 border">
-						{asset.photo_url && (
-							<img
-								src={`http://localhost:3000/${asset.photo_url}`}
-								alt="event"
-								className="w-16 h-16 object-cover"
-							/>
-						)}
-					</td>
-					<td className="px-4 py-2 border">{asset.name}</td>
-					<td className="px-4 py-2 border">{asset.type}</td>
-					<td className="px-4 py-2 border">{asset.quantity}</td>
-					<td className="px-4 py-2 border">{asset.available_quantity}</td>
-					<td className="px-4 py-2 border">{asset.notes}</td>
-					<td className="px-4 py-2 border space-x-2">
-						<button
-							onClick={() => openEditModal(asset)}
-							className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-base-200"
-						>
-							Edit
-						</button>
-						<button
-							onClick={() => handleDelete(asset.id)}
-							className="bg-red-600 text-white px-2 py-1 rounded hover:bg-base-200"
-						>
-							Delete
-						</button>
-					</td>
-				</tr>
-			))}
-		</tbody>
-	</table>
+    <table className="min-w-full border text-sm text-left">
+      <thead className="bg-base-600">
+        <tr>
+          <th className="px-4 py-2 border">No.</th>
+          <th className="px-4 py-2 border">Image</th>
+          <th className="px-4 py-2 border">Name</th>
+          <th className="px-4 py-2 border">Type</th>
+          <th className="px-4 py-2 border">Qty</th>
+          <th className="px-4 py-2 border">Available</th>
+          <th className="px-4 py-2 border">Notes</th>
+          <th className="px-4 py-2 border">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {filteredAssets.map((asset, i) => (
+          <tr key={asset.id}>
+            <td className="px-4 py-2 border">{i + 1}</td>
+            <td className="px-4 py-2 border">
+              {asset.photo_url && (
+                <img
+                  src={`http://localhost:3000/${asset.photo_url}`}
+                  alt="event"
+                  className="w-16 h-16 object-cover"
+                />
+              )}
+            </td>
+            <td className="px-4 py-2 border">{asset.name}</td>
+            <td className="px-4 py-2 border">{asset.type}</td>
+            <td className="px-4 py-2 border">{asset.quantity}</td>
+            <td className="px-4 py-2 border">{asset.available_quantity}</td>
+            <td className="px-4 py-2 border">{asset.notes}</td>
+            <td className="px-4 py-2 border space-x-2">
+              <button
+                onClick={() => openEditModal(asset)}
+                className="bg-yellow-500 text-white px-2 py-1 rounded hover:bg-base-200"
+              >
+                Edit
+              </button>
+              <button
+                onClick={() => handleDelete(asset.id)}
+                className="bg-red-600 text-white px-2 py-1 rounded hover:bg-base-200"
+              >
+                Delete
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
 
 	{/* Modal */}
 	{isModalOpen && (

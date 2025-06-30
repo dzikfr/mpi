@@ -310,11 +310,6 @@ INSERT INTO public.master_role VALUES ('540b221e-cfd3-4dbd-baa7-3db82004fe3a', '
 --
 
 INSERT INTO public.master_user VALUES ('9ffde372-a407-4580-9bb5-3f4c4ee9edad', 'admin', '$2b$10$igLNWB2/pgfDDOvZrpDtZO5qUkHoP37gfvTPDysFVDOqeCyi1VJHe', '2025-05-28 21:33:08.92168+07', NULL, 'A');
-INSERT INTO public.master_user VALUES ('2318d38b-284c-4bfb-9efd-c8fc887c5ba5', 'dzikri', '$2b$10$zB6diSqo1IPXfxa84GORsOAQyUbHXqqwu2ejE/tKTqL4rwHfzzTYy', '2025-06-27 13:44:53.57179+07', NULL, 'A');
-INSERT INTO public.master_user VALUES ('a9d0f691-00e8-4043-8272-6b01ae06a20d', 'dzikri', '$2b$10$oPX4iEeOWdd.X01ZQ53KCe4tkQijLqL6gU0vFUFDze5KuhXVPLyyu', '2025-06-27 13:46:41.149542+07', NULL, 'A');
-INSERT INTO public.master_user VALUES ('c772da31-52ea-4a73-8d65-ec461fdcfedd', 'dzikri', '$2b$10$ZJSE3sZUZqz007rHtj/ldeBquxXCxN7w.M53aucmDIdFxJpFYbxwi', '2025-06-27 13:57:45.21563+07', NULL, 'A');
-
-
 --
 -- TOC entry 4751 (class 2606 OID 21278)
 -- Name: fw_asset_log fw_asset_log_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres

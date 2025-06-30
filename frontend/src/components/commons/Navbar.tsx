@@ -1,5 +1,4 @@
 import React from "react";
-import LogoutButton from "./LogoutButton";
 
 const Navbar: React.FC = () => {
   return (
@@ -64,7 +63,16 @@ const Navbar: React.FC = () => {
         <a className="text-xl">Event Organizer</a>
       </div>
       <div className="navbar-end">
-        <LogoutButton />
+        <div className="font-bold mr-5">
+            Admin
+        </div>
+        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar mr-10">
+        <div className="w-10 rounded-full">
+          <img
+            alt="Tailwind CSS Navbar component"
+            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+        </div>
+      </div>
       </div>
     </div>
   );
