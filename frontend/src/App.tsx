@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import EventPage from "./pages/EventPage";
 import AssetPage from "./pages/AssetPage";
 import VolunteerPage from "./pages/VolunteerPage";
+import MonitoringPage from "./pages/MonitoringPage";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="event" element={<EventPage />} />
             <Route path="asset" element={<AssetPage />} />
             <Route path="volunteer" element={<VolunteerPage />} />
+            <Route path="monitoring" element={<MonitoringPage />} />
           </Route>
         </Route>
 

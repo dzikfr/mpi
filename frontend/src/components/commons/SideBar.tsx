@@ -4,7 +4,7 @@ import LogoutButton from "./LogoutButton";
 
 const Sidebar: React.FC = () => {
   const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-    `block px-4 py-2 rounded hover:bg-blue-100 ${
+    `block px-4 py-2 rounded hover:bg-blue-100 hover:text-black ${
       isActive ? "bg-white text-black font-semibold" : ""
     }`;
 
@@ -22,6 +22,9 @@ const Sidebar: React.FC = () => {
         </NavLink>
         <NavLink to="/volunteer" className={navLinkClass}>
           Volunteer
+        </NavLink>
+        <NavLink to="/monitoring" className={navLinkClass}>
+          Monitoring
         </NavLink>
       </nav>
 
